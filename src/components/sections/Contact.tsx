@@ -154,6 +154,12 @@ export const Contact: React.FC = () => {
       label: 'LinkedIn',
       href: 'https://linkedin.com/in/tu-perfil',
       color: 'hover:text-blue-600 dark:hover:text-blue-400'
+    },
+    {
+      icon: Twitter,
+      label: 'Twitter',
+      href: 'https://twitter.com/tu-usuario',
+      color: 'hover:text-blue-400 dark:hover:text-blue-300'
     }
   ];
 
