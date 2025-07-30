@@ -45,8 +45,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     >
       {/* Featured Badge */}
       {project.featured && (
-        <div className="absolute top-4 left-4 z-20">
-          <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+        <div className="absolute z-20 top-4 left-4">
+          <span className="px-3 py-1 text-xs font-bold text-white rounded-full shadow-lg bg-gradient-to-r from-yellow-400 to-orange-500">
             ⭐ Destacado
           </span>
         </div>
@@ -80,7 +80,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               href={project.liveUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-2 bg-white/90 dark:bg-gray-800/90 text-gray-900 dark:text-white rounded-full hover:bg-white dark:hover:bg-gray-700 transition-colors duration-200 backdrop-blur-sm"
+              className="p-2 text-gray-900 transition-colors duration-200 rounded-full bg-white/90 dark:bg-gray-800/90 dark:text-white hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm"
               title="Ver proyecto"
             >
               <ExternalLink className="w-4 h-4" />
@@ -91,7 +91,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               href={project.githubUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-2 bg-white/90 dark:bg-gray-800/90 text-gray-900 dark:text-white rounded-full hover:bg-white dark:hover:bg-gray-700 transition-colors duration-200 backdrop-blur-sm"
+              className="p-2 text-gray-900 transition-colors duration-200 rounded-full bg-white/90 dark:bg-gray-800/90 dark:text-white hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm"
               title="Ver código"
             >
               <Github className="w-4 h-4" />
@@ -104,7 +104,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       <div className="p-6">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+          <h3 className="text-xl font-bold text-gray-900 transition-colors duration-200 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
             {project.title}
           </h3>
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
@@ -114,7 +114,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </div>
 
         {/* Tags */}
-        <div className="flex items-center space-x-2 mb-4">
+        <div className="flex items-center mb-4 space-x-2">
           <span className={`px-2 py-1 text-xs font-medium rounded-full ${getCategoryColor(project.category)}`}>
             {project.category.toUpperCase()}
           </span>
@@ -125,27 +125,27 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </div>
 
         {/* Description */}
-        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+        <p className="mb-4 text-gray-600 dark:text-gray-400 line-clamp-2">
           {project.description}
         </p>
 
         {/* Technologies */}
         <div className="mb-4">
           <div className="flex items-center mb-2">
-            <Tag className="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2" />
+            <Tag className="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Tecnologías</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {project.technologies.slice(0, 4).map((tech, index) => (
               <span 
                 key={index}
-                className="px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md"
+                className="px-2 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-300"
               >
                 {tech}
               </span>
             ))}
             {project.technologies.length > 4 && (
-              <span className="px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-md">
+              <span className="px-2 py-1 text-xs font-medium text-gray-500 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-400">
                 +{project.technologies.length - 4} más
               </span>
             )}
@@ -154,7 +154,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-          <button className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200">
+          <button className="flex items-center space-x-2 text-blue-600 transition-colors duration-200 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
             <Eye className="w-4 h-4" />
             <span className="text-sm font-medium">Ver detalles</span>
           </button>
@@ -165,7 +165,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                 href={project.liveUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-200"
+                className="text-gray-500 transition-colors duration-200 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                 title="Ver proyecto"
               >
                 <ExternalLink className="w-4 h-4" />
@@ -176,7 +176,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                 href={project.githubUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-200"
+                className="text-gray-500 transition-colors duration-200 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                 title="Ver código"
               >
                 <Github className="w-4 h-4" />

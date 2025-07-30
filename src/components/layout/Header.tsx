@@ -79,18 +79,30 @@ export const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="items-center hidden space-x-8 md:flex">
+          <div className="items-center hidden space-x-2 md:flex">
             {navItems.map((item) => (
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200
-                  hover:text-blue-600 dark:hover:text-blue-400 text-gray-700 dark:text-gray-300 bg-transparent
-                  ${activeSection === item.href ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}
+                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group
+                  ${activeSection === item.href 
+                    ? 'text-white bg-blue-600 dark:bg-blue-500 shadow-lg transform scale-105' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                  }
                 `}
-                style={{ background: 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
+                style={{ background: activeSection === item.href ? undefined : 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
               >
                 {item.name}
+                
+                {/* Indicador de sección activa */}
+                {activeSection === item.href && (
+                  <span className="absolute w-2 h-2 transform -translate-x-1/2 bg-white rounded-full shadow-md -bottom-1 left-1/2 animate-pulse"></span>
+                )}
+                
+                {/* Efecto hover cuando no está activo */}
+                {activeSection !== item.href && (
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+                )}
               </button>
             ))}
           </div>
@@ -150,10 +162,20 @@ export const Header: React.FC = () => {
                   scrollToSection(item.href);
                   setIsMenuOpen(false);
                 }}
-                className={`block px-4 py-2 text-base font-medium rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300 bg-transparent`}
-                style={{ background: 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
+                className={`block w-full px-4 py-3 text-base font-medium rounded-md transition-all duration-200 text-left
+                  ${activeSection === item.href 
+                    ? 'text-white bg-blue-600 dark:bg-blue-500 shadow-md transform scale-105' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                  }
+                `}
+                style={{ border: 'none', outline: 'none', cursor: 'pointer' }}
               >
-                {item.name}
+                <div className="flex items-center justify-between">
+                  {item.name}
+                  {activeSection === item.href && (
+                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                  )}
+                </div>
               </button>
             ))}
             

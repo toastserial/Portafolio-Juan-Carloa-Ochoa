@@ -32,25 +32,11 @@ export const skills: Skill[] = [
     color: '#000000'
   },
   {
-    name: 'Vue.js',
-    level: 80,
-    category: 'frontend',
-    icon: '💚',
-    color: '#4FC08D'
-  },
-  {
     name: 'Tailwind CSS',
     level: 90,
     category: 'frontend',
     icon: '🎨',
     color: '#06B6D4'
-  },
-  {
-    name: 'SASS/SCSS',
-    level: 85,
-    category: 'frontend',
-    icon: '💅',
-    color: '#CC6699'
   },
 
   // Backend
@@ -69,32 +55,25 @@ export const skills: Skill[] = [
     color: '#000000'
   },
   {
-    name: 'Python',
+    name:'PHP',
+    level: 80,
+    category: 'backend',
+    icon: '🐘',
+    color: '#777BB4'
+  },
+  {
+    name: 'MySQL',
     level: 82,
     category: 'backend',
-    icon: '🐍',
+    icon: '🐬',
     color: '#3776AB'
   },
   {
     name: 'PostgreSQL',
-    level: 80,
+    level: 50,
     category: 'backend',
     icon: '🐘',
     color: '#336791'
-  },
-  {
-    name: 'MongoDB',
-    level: 85,
-    category: 'backend',
-    icon: '🍃',
-    color: '#47A248'
-  },
-  {
-    name: 'Firebase',
-    level: 78,
-    category: 'backend',
-    icon: '🔥',
-    color: '#FFCA28'
   },
 
   // Tools
@@ -102,7 +81,7 @@ export const skills: Skill[] = [
     name: 'Git',
     level: 90,
     category: 'tools',
-    icon: '📝',
+    icon: '<>',
     color: '#F05032'
   },
   {
@@ -112,11 +91,20 @@ export const skills: Skill[] = [
     icon: '🐳',
     color: '#2496ED'
   },
+
+  // Design
   {
-      name: 'AWS',
-      level: 70,
-      category: 'frontend',
-      icon: '',
-      color: ''
-    }
+    name: 'Figma',
+    level: 70,
+    category: 'design',
+    icon: '🎨',
+    color: '#F24E1E'
+  },
+  {
+    name: 'Excalidraw',
+    level: 60,
+    category: 'design',
+    icon: '✏️',
+    color: '#FF61F6'
+  }
   ];

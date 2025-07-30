@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
   const socialLinks = [
     {
       icon: Github,
-      href: 'https://github.com/tu-usuario',
+      href: 'https://github.com/toastserial',
       label: 'GitHub',
       color: 'hover:text-gray-900 dark:hover:text-white'
     },
