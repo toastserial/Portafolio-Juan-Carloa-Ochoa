@@ -25,7 +25,7 @@ export const Footer: React.FC = () => {
     },
     {
       icon: Mail,
-      href: 'mailto:tu@email.com',
+      href: 'mailto:jcochoag18@gmail.com',
       label: 'Email',
       color: 'hover:text-red-600 dark:hover:text-red-400'
     }

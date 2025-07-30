@@ -1,6 +1,7 @@
 // src/components/sections/Contact.tsx
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Github, Linkedin, Twitter } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Github, Linkedin, /*Twitter*/ } from 'lucide-react';
+import emailjs from 'emailjs-com';
 
 interface ContactForm {
   name: string;
@@ -92,7 +93,7 @@ export const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -101,14 +102,20 @@ export const Contact: React.FC = () => {
     setSubmitStatus('idle');
 
     try {
-      // Simular envío de formulario (aquí integrarías con EmailJS o tu backend)
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simulando éxito
+      await emailjs.send(
+        'service_wzlz7gp',      // Reemplaza con tu Service ID de EmailJS
+        'template_9i5uu1f',     // Reemplaza con tu Template ID de EmailJS
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          time: new Date().toLocaleString('es-HN', { timeZone: 'America/Tegucigalpa' }),
+        },
+        'BwBzznphHrwQlV-8C'          // Reemplaza con tu Public Key de EmailJS
+      );
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Reset success message after 5 seconds
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } catch (error) {
       setSubmitStatus('error');
@@ -122,22 +129,22 @@ export const Contact: React.FC = () => {
     {
       icon: Mail,
       label: 'Email',
-      value: 'tu@email.com',
-      href: 'mailto:tu@email.com',
+      value: 'jcochoag18@gmail.com',
+      href: 'mailto:jcohoag18@gmail.com',
       color: 'text-blue-600 dark:text-blue-400'
     },
     {
       icon: Phone,
       label: 'Teléfono',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
+      value: '+504 96821640',
+      href: 'tel:+504 9682-1640',
       color: 'text-green-600 dark:text-green-400'
     },
     {
       icon: MapPin,
       label: 'Ubicación',
-      value: 'Tu Ciudad, País',
-      href: '#',
+      value: 'Siguatepeque, Comayagua.',
+      href: 'https:google.com/maps?q=Siguatepeque,Comayagua',
       color: 'text-purple-600 dark:text-purple-400'
     }
   ];
@@ -146,7 +153,7 @@ export const Contact: React.FC = () => {
     {
       icon: Github,
       label: 'GitHub',
-      href: 'https://github.com/tu-usuario',
+      href: 'https://github.com/toastserial',
       color: 'hover:text-gray-900 dark:hover:text-white'
     },
     {
@@ -155,12 +162,12 @@ export const Contact: React.FC = () => {
       href: 'https://linkedin.com/in/tu-perfil',
       color: 'hover:text-blue-600 dark:hover:text-blue-400'
     },
-    {
+    /*{
       icon: Twitter,
       label: 'Twitter',
       href: 'https://twitter.com/tu-usuario',
       color: 'hover:text-blue-400 dark:hover:text-blue-300'
-    }
+    }*/
   ];
 
   return (
