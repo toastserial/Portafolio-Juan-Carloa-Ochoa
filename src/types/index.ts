@@ -16,15 +16,6 @@ export interface Skill {
   icon: string;
 }
 
-export interface Experience {
-  id: string;
-  company: string;
-  position: string;
-  period: string;
-  description: string[];
-  technologies: string[];
-}
-
 export interface ContactForm {
   name: string;
   email: string;

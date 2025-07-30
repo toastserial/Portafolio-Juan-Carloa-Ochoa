@@ -428,7 +428,7 @@ export const Contact: React.FC = () => {
             <h3 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
               Preguntas Frecuentes
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 dark:text-gray-200">
               Respuestas a las consultas más comunes
             </p>
           </div>
