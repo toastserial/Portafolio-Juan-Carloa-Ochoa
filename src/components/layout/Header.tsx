@@ -68,7 +68,27 @@ export const Header: React.FC = () => {
           : 'bg-transparent'
       }`}
     >
-      <nav className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      {/* Fondo interactivo */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Gradiente base */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 dark:from-purple-500/5 dark:to-blue-500/5" />
+        
+        {/* Elementos decorativos */}
+        <div className="absolute w-[500px] h-[500px] -top-[250px] -left-[250px] bg-purple-500/20 dark:bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute w-[400px] h-[400px] -top-[200px] -right-[200px] bg-blue-500/20 dark:bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        
+        {/* Efecto de malla */}
+        <div 
+          className="absolute inset-0 opacity-10 dark:opacity-20"
+          style={{
+            backgroundImage: `radial-gradient(circle at center, purple 1px, transparent 1px)`,
+            backgroundSize: '24px 24px'
+          }}
+        />
+      </div>
+
+      {/* Contenido existente */}
+      <nav className="relative px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link 
@@ -79,7 +99,7 @@ export const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="items-center hidden space-x-2 md:flex">
+          <div className="items-center hidden space-x-12 md:flex">
             {navItems.map((item) => (
               <button
                 key={item.name}
