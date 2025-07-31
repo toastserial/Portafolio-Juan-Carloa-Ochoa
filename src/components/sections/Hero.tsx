@@ -84,8 +84,8 @@ export const Hero: React.FC = () => {
           </div>
 
           <p className="max-w-3xl mx-auto mb-12 text-lg leading-relaxed text-gray-600 sm:text-xl dark:text-gray-400">
-            Especializado en crear experiencias web modernas y funcionales. 
-            Apasionado por el código limpio, el diseño intuitivo y las últimas tecnologías.
+            Especializado en crear experiencias web modernas y funcionales,
+            apasionado por el código limpio, el diseño intuitivo y las últimas tecnologías.
           </p>
 
           {/* CTA Buttons */}

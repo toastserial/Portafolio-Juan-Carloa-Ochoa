@@ -130,14 +130,14 @@ export const Contact: React.FC = () => {
       icon: Mail,
       label: 'Email',
       value: 'jcochoag18@gmail.com',
-      href: 'mailto:jcohoag18@gmail.com',
+      href: 'mailto:jcochoag18@gmail.com',
       color: 'text-blue-600 dark:text-blue-400'
     },
     {
       icon: Phone,
       label: 'Teléfono',
       value: '+504 96821640',
-      href: 'tel:+504 9682-1640',
+      href: 'whatsapp://send?phone=50496821640',
       color: 'text-green-600 dark:text-green-400'
     },
     {

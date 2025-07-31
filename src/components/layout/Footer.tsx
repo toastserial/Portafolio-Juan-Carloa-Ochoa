@@ -1,7 +1,7 @@
 // src/components/layout/Footer.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowUp, Phone } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -28,6 +28,12 @@ export const Footer: React.FC = () => {
       href: 'mailto:jcochoag18@gmail.com',
       label: 'Email',
       color: 'hover:text-red-600 dark:hover:text-red-400'
+    },
+    {
+      icon: Phone,
+      href: 'https://wa.me/50496821640',
+      label: 'WhatsApp',
+      color: 'hover:text-green-600 dark:hover:text-green-400'
     }
   ];
 

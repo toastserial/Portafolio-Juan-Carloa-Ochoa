@@ -41,4 +41,41 @@
       opacity: 0.1;
     }
   }
+
+  /* Estilos para animaciones del hero */
+  .hero-particles {
+    pointer-events: none;
+  }
+
+  .hero-particle {
+    will-change: transform, opacity;
+  }
+
+  /* Mejoras para elementos interactivos */
+  .magnetic-element {
+    will-change: transform;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* Efectos de glow personalizados */
+  .glow-effect {
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+  }
+
+  /* Cursor personalizado */
+  .custom-cursor {
+    mix-blend-mode: exclusion;
+  }
+
+  /* Animaciones de entrada suaves */
+  .smooth-appear {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .smooth-appear.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,7 +1,7 @@
 // src/components/layout/Header.tsx
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Mail, Phone } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 
 interface NavItem {
@@ -150,6 +150,14 @@ export const Header: React.FC = () => {
               className="p-2 text-gray-600 transition-colors duration-200 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
             >
               <Mail className="w-5 h-5" />
+            </a>
+            <a 
+              href="https://wa.me/50496821640"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-2 text-gray-600 transition-colors duration-200 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              <Phone className="w-5 h-5" />
             </a>
             <ThemeToggle />
           </div>
