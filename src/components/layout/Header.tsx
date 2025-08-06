@@ -3,31 +3,35 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Github, Linkedin, Mail, Phone } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { LanguageToggle } from '../common/LanguageToggle';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface NavItem {
   name: string;
   href: string;
+  key: string;
 }
-
-const navItems: NavItem[] = [
-  { name: 'Inicio', href: 'inicio' },
-  { name: 'Proyectos', href: 'projects-section' },
-  { name: 'Habilidades', href: 'skills-section' },
-  { name: 'Contacto', href: 'contact-section' },
-];
-
-const scrollToSection = (id: string) => {
-  const section = document.getElementById(id);
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth' });
-  }
-};
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('inicio');
   const location = useLocation();
+  const { t } = useLanguage();
+
+  const navItems: NavItem[] = [
+    { name: t('nav.home'), href: 'inicio', key: 'nav.home' },
+    { name: t('nav.projects'), href: 'projects-section', key: 'nav.projects' },
+    { name: t('nav.skills'), href: 'skills-section', key: 'nav.skills' },
+    { name: t('nav.contact'), href: 'contact-section', key: 'nav.contact' },
+  ];
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -159,11 +163,13 @@ export const Header: React.FC = () => {
             >
               <Phone className="w-5 h-5" />
             </a>
+            <LanguageToggle />
             <ThemeToggle />
           </div>
 
           {/* Mobile menu button */}
           <div className="items-center space-x-2 md:hidden">
+            <LanguageToggle />
             <ThemeToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}

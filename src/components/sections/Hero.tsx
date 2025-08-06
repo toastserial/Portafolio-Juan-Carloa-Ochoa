@@ -112,7 +112,7 @@ export const Hero: React.FC = () => {
         {/* Scroll Indicator */}
         <button 
           onClick={scrollToProjects}
-          className="absolute text-gray-400 transition-colors duration-300 transform -translate-x-1/2 bottom-8 left-1/2 hover:text-blue-500 animate-bounce"
+          className="absolute mt-2 text-gray-400 transition-colors duration-300 transform -translate-x-1/2 left-1/2 hover:text-blue-500 animate-bounce"
           aria-label="Scroll to next section"
         >
           <ChevronDown className="w-6 h-6" />
