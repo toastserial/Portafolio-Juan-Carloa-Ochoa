@@ -213,8 +213,8 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Floating Elements */}
-        <div className="absolute w-20 h-20 rounded-full top-10 right-10 bg-blue-500/5 animate-pulse" />
-        <div className="absolute w-16 h-16 delay-1000 rounded-full bottom-20 left-10 bg-purple-500/5 animate-pulse" />
+        <div className="absolute w-20 h-20 rounded-full top-10 right-10 bg-red-700/5 animate-pulse" />
+        <div className="absolute w-16 h-16 delay-1000 rounded-full bottom-20 left-10 bg-purple-200/5 animate-pulse" />
       </div>
     </footer>
   );

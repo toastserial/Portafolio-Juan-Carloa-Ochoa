@@ -1,18 +1,27 @@
 // src/components/sections/Hero.tsx
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, Download, ArrowRight } from 'lucide-react';
-
-const roles = [
-  'Desarrollador Frontend',
-  'Desarrollador React',
-  'Desarrollador Full Stack',
-  'UI/UX Developer'
-];
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export const Hero: React.FC = () => {
+  const { t } = useLanguage();
   const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const roles = [
+    t('hero.roles.frontend'),
+    t('hero.roles.react'),
+    t('hero.roles.fullstack'),
+    t('hero.roles.uiux')
+  ];
+
+  // Reset animation when language changes
+  useEffect(() => {
+    setDisplayText('');
+    setCurrentRole(0);
+    setIsDeleting(false);
+  }, [roles.join('')]);
 
   useEffect(() => {
     const currentText = roles[currentRole];
@@ -37,7 +46,7 @@ export const Hero: React.FC = () => {
     }, typingSpeed);
 
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, currentRole]);
+  }, [displayText, isDeleting, currentRole, roles]);
 
   const scrollToProjects = () => {
     const projectsSection = document.getElementById('projects-section');
@@ -71,12 +80,12 @@ export const Hero: React.FC = () => {
         {/* Main Content */}
         <div className="animate-slide-up">
           <h1 className="mb-6 text-4xl font-bold text-gray-900 sm:text-5xl lg:text-6xl dark:text-white">
-            Hola, soy{' '}
-            <span className="text-gradient">Juan Carlos Ochoa Guzmán</span>
+            {t('hero.greeting')}{' '}
+            <span className="text-gradient">{t('hero.name')}</span>
           </h1>
           
           <div className="flex items-center justify-center h-12 mb-8 text-2xl font-light text-gray-700 sm:text-3xl lg:text-4xl dark:text-gray-300">
-            <span className="mr-2">Soy</span>
+            <span className="mr-2">{t('hero.role.prefix')}</span>
             <span className="min-w-0 font-medium text-gradient">
               {displayText}
               <span className="animate-pulse">|</span>
@@ -84,8 +93,7 @@ export const Hero: React.FC = () => {
           </div>
 
           <p className="max-w-3xl mx-auto mb-12 text-lg leading-relaxed text-gray-600 sm:text-xl dark:text-gray-400">
-            Especializado en crear experiencias web modernas y funcionales,
-            apasionado por el código limpio, el diseño intuitivo y las últimas tecnologías.
+            {t('hero.description')}
           </p>
 
           {/* CTA Buttons */}
@@ -94,7 +102,7 @@ export const Hero: React.FC = () => {
               onClick={scrollToProjects}
               className="flex items-center px-8 py-4 space-x-2 font-medium text-white transition-all duration-300 rounded-full group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 hover:shadow-xl"
             >
-              <span>Ver mis proyectos</span>
+              <span>{t('hero.viewProjects')}</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
             
@@ -104,7 +112,7 @@ export const Hero: React.FC = () => {
               className="flex items-center px-8 py-4 space-x-2 font-medium text-gray-700 transition-all duration-300 border-2 border-gray-300 rounded-full group dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-105"
             >
               <Download className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-1" />
-              <span>Descargar CV</span>
+              <span>{t('hero.downloadCV')}</span>
             </a>
           </div>
         </div>

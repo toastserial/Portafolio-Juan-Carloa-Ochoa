@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Github, Linkedin, /*Twitter*/ } from 'lucide-react';
 import emailjs from 'emailjs-com';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface ContactForm {
   name: string;
@@ -18,6 +19,7 @@ interface FormErrors {
 }
 
 export const Contact: React.FC = () => {
+  const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState<ContactForm>({
     name: '',
@@ -181,7 +183,7 @@ export const Contact: React.FC = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <h2 className="mb-4 text-4xl font-bold text-gray-900 lg:text-5xl dark:text-white">
-            Hablemos sobre tu <span className="text-gradient">Proyecto</span>
+            {t('contact.title').split(' ')[0]}{t('contact.title').split(' ').length > 1 ? ' ' + t('contact.title').split(' ').slice(1).join(' ') : ''}
           </h2>
           <p className="max-w-3xl mx-auto text-xl text-gray-600 dark:text-gray-400">
             ¿Tienes una idea genial? ¿Necesitas ayuda con tu proyecto? 
@@ -196,7 +198,7 @@ export const Contact: React.FC = () => {
           }`}>
             <div className="p-8 bg-white shadow-xl dark:bg-gray-800 rounded-2xl">
               <h3 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-                Información de Contacto
+                {t('contact.info.title')}
               </h3>
               
               <div className="mb-8 space-y-6">
@@ -247,7 +249,7 @@ export const Contact: React.FC = () => {
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
                   <span className="font-medium text-green-800 dark:text-green-400">
-                    Disponible para nuevos proyectos
+                    Disponibilidad
                   </span>
                 </div>
                 <p className="mt-1 text-sm text-green-600 dark:text-green-400">
