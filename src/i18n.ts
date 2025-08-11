@@ -22,12 +22,12 @@ i18n
       escapeValue: false, // React ya escapa por defecto
     },
     detection: {
-      order: ['path', 'localStorage', 'navigator', 'htmlTag', 'cookies'],
+      order: ['path', 'localStorage', 'navigator', 'htmlTag', 'cookie'],
       lookupFromPathIndex: 0,
-      caches: ['cookies'],
+      caches: ['cookie'],
     },
     react: {
-      useSuspense: false, // Para compatibilidad con React 18/19
+      useSuspense: false,
     },
   });
 
