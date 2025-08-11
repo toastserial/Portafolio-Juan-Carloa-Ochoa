@@ -1,6 +1,7 @@
 // src/components/sections/Projects.tsx
 import React, { useState, useEffect } from 'react';
 import { Filter, Grid3X3, List, Search } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 import { ProjectCard } from '../common/ProjectCard';
 import { projects } from '../../data/projects';
 import type { Project } from '../../types/project';
@@ -9,6 +10,7 @@ type FilterType = 'all' | 'web' | 'mobile' | 'desktop' | 'api';
 type ViewType = 'grid' | 'list';
 
 export const Projects: React.FC = () => {
+  const { t } = useTranslation();
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [viewType, setViewType] = useState<ViewType>('grid');
@@ -54,10 +56,10 @@ export const Projects: React.FC = () => {
   }, [activeFilter, searchTerm]);
 
   const filterOptions = [
-    { key: 'all', label: 'Todos', count: projects.length },
-    { key: 'web', label: 'Web', count: projects.filter(p => p.category === 'web').length },
-    { key: 'mobile', label: 'Móvil', count: projects.filter(p => p.category === 'mobile').length },
-    { key: 'api', label: 'API', count: projects.filter(p => p.category === 'api').length },
+    { key: 'all', label: t('projects.filters.all', 'Todos'), count: projects.length },
+    { key: 'web', label: t('projects.filters.web', 'Web'), count: projects.filter(p => p.category === 'web').length },
+    { key: 'mobile', label: t('projects.filters.mobile', 'Móvil'), count: projects.filter(p => p.category === 'mobile').length },
+    { key: 'api', label: t('projects.filters.api', 'API'), count: projects.filter(p => p.category === 'api').length },
   ];
 
   return (
@@ -71,11 +73,10 @@ export const Projects: React.FC = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <h2 className="mb-4 text-4xl font-bold text-gray-900 lg:text-5xl dark:text-white">
-            Mis <span className="text-gradient">Proyectos</span>
+            {t('projects.title')} <span className="text-gradient">{t('projects.titleHighlight', 'Proyectos')}</span>
           </h2>
           <p className="max-w-3xl mx-auto text-xl text-gray-600 dark:text-gray-400">
-            Una colección de proyectos que demuestran mis habilidades en desarrollo web, 
-            móvil y backend. Cada proyecto está construido con las mejores prácticas y tecnologías modernas.
+            {t('projects.subtitle')}
           </p>
         </div>
 
@@ -89,7 +90,7 @@ export const Projects: React.FC = () => {
               <Search className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
               <input
                 type="text"
-                placeholder="Buscar proyectos o tecnologías..."
+                placeholder={t('projects.search')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full py-3 pl-10 pr-4 text-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"

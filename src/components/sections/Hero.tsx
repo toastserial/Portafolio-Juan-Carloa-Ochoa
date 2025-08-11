@@ -1,18 +1,16 @@
 // src/components/sections/Hero.tsx
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, Download, ArrowRight } from 'lucide-react';
-
-const roles = [
-  'Desarrollador Frontend',
-  'Desarrollador React',
-  'Desarrollador Full Stack',
-  'UI/UX Developer'
-];
+import { useTranslation } from '../../hooks/useTranslation';
 
 export const Hero: React.FC = () => {
+  const { t } = useTranslation();
   const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Get roles from translation
+  const roles = t('hero.roles', { returnObjects: true }) as string[];
 
   useEffect(() => {
     const currentText = roles[currentRole];
@@ -71,12 +69,12 @@ export const Hero: React.FC = () => {
         {/* Main Content */}
         <div className="animate-slide-up">
           <h1 className="mb-6 text-4xl font-bold text-gray-900 sm:text-5xl lg:text-6xl dark:text-white">
-            Hola, soy{' '}
-            <span className="text-gradient">Juan Carlos Ochoa Guzmán</span>
+            {t('hero.greeting')}{' '}
+            <span className="text-gradient">{t('hero.name')}</span>
           </h1>
           
           <div className="flex items-center justify-center h-12 mb-8 text-2xl font-light text-gray-700 sm:text-3xl lg:text-4xl dark:text-gray-300">
-            <span className="mr-2">Soy</span>
+            <span className="mr-2">{t('hero.rolePrefix')}</span>
             <span className="min-w-0 font-medium text-gradient">
               {displayText}
               <span className="animate-pulse">|</span>
@@ -84,8 +82,7 @@ export const Hero: React.FC = () => {
           </div>
 
           <p className="max-w-3xl mx-auto mb-12 text-lg leading-relaxed text-gray-600 sm:text-xl dark:text-gray-400">
-            Especializado en crear experiencias web modernas y funcionales,
-            apasionado por el código limpio, el diseño intuitivo y las últimas tecnologías.
+            {t('hero.description')}
           </p>
 
           {/* CTA Buttons */}
@@ -94,7 +91,7 @@ export const Hero: React.FC = () => {
               onClick={scrollToProjects}
               className="flex items-center px-8 py-4 space-x-2 font-medium text-white transition-all duration-300 rounded-full group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 hover:shadow-xl"
             >
-              <span>Ver mis proyectos</span>
+              <span>{t('hero.viewProjects')}</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
             
@@ -104,7 +101,7 @@ export const Hero: React.FC = () => {
               className="flex items-center px-8 py-4 space-x-2 font-medium text-gray-700 transition-all duration-300 border-2 border-gray-300 rounded-full group dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-105"
             >
               <Download className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-1" />
-              <span>Descargar CV</span>
+              <span>{t('hero.downloadCV')}</span>
             </a>
           </div>
         </div>
@@ -112,23 +109,12 @@ export const Hero: React.FC = () => {
         {/* Scroll Indicator */}
         <button 
           onClick={scrollToProjects}
-          className="absolute text-gray-400 transition-colors duration-300 transform -translate-x-1/2 bottom-8 left-1/2 hover:text-blue-500 animate-bounce"
+          className="absolute mt-2 text-gray-400 transition-colors duration-300 transform -translate-x-1/2 left-1/2 hover:text-blue-500 animate-bounce"
           aria-label="Scroll to next section"
         >
           <ChevronDown className="w-6 h-6" />
         </button>
       </div>
-
-      {/* Additional CSS for custom animations */}
-      <style>{`
-        @keyframes spin-slow {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 20s linear infinite;
-        }
-      `}</style>
     </section>
   );
 };

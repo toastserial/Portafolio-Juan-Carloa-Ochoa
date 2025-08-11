@@ -2,8 +2,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail, ArrowUp, Phone } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export const Footer: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   const scrollToTop = () => {
@@ -38,10 +40,10 @@ export const Footer: React.FC = () => {
   ];
 
   const quickLinks = [
-    { name: 'Inicio', href: 'inicio' },
-    { name: 'Proyectos', href: 'projects-section' },
-    { name: 'Habilidades', href: 'skills-section' },
-    { name: 'Contacto', href: 'contact-section' }
+    { name: t('nav.home'), href: 'inicio' },
+    { name: t('nav.projects'), href: 'projects-section' },
+    { name: t('nav.skills'), href: 'skills-section' },
+    { name: t('nav.contact'), href: 'contact-section' }
   ];
 
   const services = [
@@ -66,12 +68,11 @@ export const Footer: React.FC = () => {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {/* Brand Section */}
             <div className="lg:col-span-1">
-              <Link to="/" className="inline-block mb-4 text-2xl font-bold text-gradient">
+              <Link to={`/${i18n.language}`} className="inline-block mb-4 text-2xl font-bold text-gradient">
                 Juan Carlos Ochoa
               </Link>
               <p className="mb-6 leading-relaxed text-gray-400">
-                Desarrollador apasionado por crear experiencias web excepcionales 
-                usando las últimas tecnologías y mejores prácticas.
+                {t('footer.description', 'Desarrollador apasionado por crear experiencias web excepcionales usando las últimas tecnologías y mejores prácticas.')}
               </p>
               
               {/* Social Links */}
@@ -96,7 +97,7 @@ export const Footer: React.FC = () => {
 
             {/* Quick Links */}
             <div>
-              <h3 className="mb-6 text-lg font-semibold text-white">Enlaces Rápidos</h3>
+              <h3 className="mb-6 text-lg font-semibold text-white">{t('footer.quickLinks', 'Enlaces Rápidos')}</h3>
               <ul className="space-y-3">
                 {quickLinks.map((link, index) => (
                   <li key={index}>
@@ -120,7 +121,7 @@ export const Footer: React.FC = () => {
 
             {/* Services */}
             <div>
-              <h3 className="mb-6 text-lg font-semibold text-white">Experiencia</h3>
+              <h3 className="mb-6 text-lg font-semibold text-white">{t('footer.experience', 'Experiencia')}</h3>
               <ul className="space-y-3">
                 {services.map((service, index) => (
                   <li key={index} className="flex items-center text-gray-400">
@@ -133,12 +134,12 @@ export const Footer: React.FC = () => {
 
             {/* Contact Info */}
             <div>
-              <h3 className="mb-6 text-lg font-semibold text-white">Contacto</h3>
+              <h3 className="mb-6 text-lg font-semibold text-white">{t('contact.info.title', 'Contacto')}</h3>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <Mail className="flex-shrink-0 w-5 h-5 mt-1 text-blue-400" />
                   <div>
-                    <p className="text-sm text-gray-400">Email</p>
+                    <p className="text-sm text-gray-400">{t('contact.info.email')}</p>
                     <a 
                       href="mailto:jcochoag18@gmail.com" 
                       className="text-white transition-colors duration-200 hover:text-blue-400"
@@ -191,7 +192,7 @@ export const Footer: React.FC = () => {
 
               {/* Tech Stack */}
               <div className="flex items-center space-x-4 text-xs text-gray-500">
-                <span>Construido con:</span>
+                <span>{t('footer.builtWith', 'Construido con:')}</span>
                 <div className="flex items-center space-x-2">
                   <span className="px-2 py-1 text-blue-400 bg-gray-800 rounded dark:bg-gray-900">React</span>
                   <span className="px-2 py-1 text-blue-600 bg-gray-800 rounded dark:bg-gray-900">TypeScript</span>
@@ -203,9 +204,9 @@ export const Footer: React.FC = () => {
               <button
                 onClick={scrollToTop}
                 className="flex items-center space-x-2 text-gray-400 transition-colors duration-200 hover:text-white group"
-                aria-label="Volver arriba"
+                aria-label={t('footer.backToTop', 'Volver arriba')}
               >
-                <span className="text-sm">Volver arriba</span>
+                <span className="text-sm">{t('footer.backToTop', 'Volver arriba')}</span>
                 <ArrowUp className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-1" />
               </button>
             </div>

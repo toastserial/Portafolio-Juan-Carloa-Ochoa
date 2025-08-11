@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "skills": "Habilidades",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "greeting": "Hola, soy",
+    "name": "Juan Carlos Ochoa Guzmán",
+    "roles": [
+      "Desarrollador Frontend",
+      "Desarrollador React",
+      "Desarrollador Full Stack",
+      "UI/UX Developer"
+    ],
+    "rolePrefix": "Soy",
+    "description": "Especializado en crear experiencias web modernas y funcionales, apasionado por el código limpio, el diseño intuitivo y las últimas tecnologías.",
+    "viewProjects": "Ver mis proyectos",
+    "downloadCV": "Descargar CV"
+  },
+  "projects": {
+    "title": "Mis",
+    "titleHighlight": "Proyectos",
+    "subtitle": "Una colección de proyectos que demuestran mis habilidades en desarrollo web, móvil y backend. Cada proyecto está construido con las mejores prácticas y tecnologías modernas.",
+    "visitSite": "Visitar Sitio",
+    "viewCode": "Ver Código",
+    "filters": {
+      "all": "Todos",
+      "web": "Web",
+      "mobile": "Móvil",
+      "api": "API"
+    },
+    "search": "Buscar proyectos o tecnologías..."
+  },
+  "skills": {
+    "title": "Mis",
+    "titleHighlight": "Habilidades",
+    "subtitle": "Tecnologías y herramientas que domino",
+    "categories": {
+      "all": "Todas",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "database": "Base de Datos",
+      "tools": "Herramientas",
+      "design": "Diseño"
+    }
+  },
+  "contact": {
+    "title": "Hablemos sobre tu",
+    "titleHighlight": "Proyecto", 
+    "subtitle": "¿Tienes una idea genial? ¿Necesitas ayuda con tu proyecto? Me encantaría escucharte y ver cómo podemos trabajar juntos.",
+    "form": {
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "subject": "Asunto",
+      "subjectPlaceholder": "Asunto del mensaje",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntame sobre tu proyecto...",
+      "send": "Enviar Mensaje",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado exitosamente!",
+      "error": "Error al enviar el mensaje. Inténtalo de nuevo.",
+      "validation": {
+        "nameRequired": "El nombre es requerido",
+        "nameMin": "El nombre debe tener al menos 2 caracteres",
+        "emailRequired": "El email es requerido",
+        "emailInvalid": "Por favor ingresa un email válido",
+        "subjectRequired": "El asunto es requerido",
+        "subjectMin": "El asunto debe tener al menos 5 caracteres",
+        "messageRequired": "El mensaje es requerido",
+        "messageMin": "El mensaje debe tener al menos 20 caracteres"
+      }
+    },
+    "info": {
+      "title": "Información de Contacto",
+      "email": "Email",
+      "phone": "Teléfono",
+      "location": "Ubicación"
+    }
+  },
+  "footer": {
+    "description": "Desarrollador apasionado por crear experiencias web excepcionales usando las últimas tecnologías y mejores prácticas.",
+    "quickLinks": "Enlaces Rápidos",
+    "experience": "Experiencia",
+    "builtWith": "Construido con:",
+    "backToTop": "Volver arriba",
+    "rights": "Todos los derechos reservados.",
+    "madeWith": "Hecho con",
+    "by": "por"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
+  "language": {
+    "spanish": "Español",
+    "english": "English"
+  }
+}

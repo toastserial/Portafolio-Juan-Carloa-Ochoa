@@ -2,28 +2,36 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Github, Linkedin, Mail, Phone } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { LanguageToggle } from '../common/LanguageToggle';
 
 interface NavItem {
-  name: string;
+  nameKey: string;
   href: string;
 }
 
 const navItems: NavItem[] = [
-  { name: 'Inicio', href: 'inicio' },
-  { name: 'Proyectos', href: 'projects-section' },
-  { name: 'Habilidades', href: 'skills-section' },
-  { name: 'Contacto', href: 'contact-section' },
+  { nameKey: 'nav.home', href: 'inicio' },
+  { nameKey: 'nav.projects', href: 'projects-section' },
+  { nameKey: 'nav.skills', href: 'skills-section' },
+  { nameKey: 'nav.contact', href: 'contact-section' },
 ];
 
 const scrollToSection = (id: string) => {
   const section = document.getElementById(id);
   if (section) {
     section.scrollIntoView({ behavior: 'smooth' });
+    
+    // Update URL with section hash while preserving language
+    const currentPath = window.location.pathname;
+    const newUrl = `${currentPath}#${id}`;
+    window.history.pushState(null, '', newUrl);
   }
 };
 
 export const Header: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('inicio');
@@ -92,7 +100,7 @@ export const Header: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link 
-            to="/" 
+            to={`/${i18n.language}`}
             className="text-2xl font-bold transition-transform duration-200 text-gradient hover:scale-105"
           >
             Juan ∞a
@@ -102,7 +110,7 @@ export const Header: React.FC = () => {
           <div className="items-center hidden space-x-12 md:flex">
             {navItems.map((item) => (
               <button
-                key={item.name}
+                key={item.nameKey}
                 onClick={() => scrollToSection(item.href)}
                 className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group
                   ${activeSection === item.href 
@@ -112,7 +120,7 @@ export const Header: React.FC = () => {
                 `}
                 style={{ background: activeSection === item.href ? undefined : 'none', border: 'none', outline: 'none', cursor: 'pointer' }}
               >
-                {item.name}
+                {t(item.nameKey)}
                 
                 {/* Indicador de sección activa */}
                 {activeSection === item.href && (
@@ -159,11 +167,13 @@ export const Header: React.FC = () => {
             >
               <Phone className="w-5 h-5" />
             </a>
+            <LanguageToggle />
             <ThemeToggle />
           </div>
 
           {/* Mobile menu button */}
           <div className="items-center space-x-2 md:hidden">
+            <LanguageToggle />
             <ThemeToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -185,7 +195,7 @@ export const Header: React.FC = () => {
           <div className="py-4 mt-2 space-y-2 rounded-lg bg-white/90 dark:bg-gray-900/90 backdrop-blur-md">
             {navItems.map((item) => (
               <button
-                key={item.name}
+                key={item.nameKey}
                 onClick={() => {
                   scrollToSection(item.href);
                   setIsMenuOpen(false);
@@ -199,7 +209,7 @@ export const Header: React.FC = () => {
                 style={{ border: 'none', outline: 'none', cursor: 'pointer' }}
               >
                 <div className="flex items-center justify-between">
-                  {item.name}
+                  {t(item.nameKey)}
                   {activeSection === item.href && (
                     <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                   )}

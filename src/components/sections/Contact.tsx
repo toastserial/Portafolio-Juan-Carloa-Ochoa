@@ -1,6 +1,7 @@
 // src/components/sections/Contact.tsx
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Github, Linkedin, /*Twitter*/ } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 import emailjs from 'emailjs-com';
 
 interface ContactForm {
@@ -18,6 +19,7 @@ interface FormErrors {
 }
 
 export const Contact: React.FC = () => {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState<ContactForm>({
     name: '',
@@ -50,31 +52,31 @@ export const Contact: React.FC = () => {
 
     // Name validation
     if (!formData.name.trim()) {
-      newErrors.name = 'El nombre es requerido';
+      newErrors.name = t('contact.form.validation.nameRequired', 'El nombre es requerido');
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'El nombre debe tener al menos 2 caracteres';
+      newErrors.name = t('contact.form.validation.nameMin', 'El nombre debe tener al menos 2 caracteres');
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = 'El email es requerido';
+      newErrors.email = t('contact.form.validation.emailRequired', 'El email es requerido');
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Por favor ingresa un email válido';
+      newErrors.email = t('contact.form.validation.emailInvalid', 'Por favor ingresa un email válido');
     }
 
     // Subject validation
     if (!formData.subject.trim()) {
-      newErrors.subject = 'El asunto es requerido';
+      newErrors.subject = t('contact.form.validation.subjectRequired', 'El asunto es requerido');
     } else if (formData.subject.trim().length < 5) {
-      newErrors.subject = 'El asunto debe tener al menos 5 caracteres';
+      newErrors.subject = t('contact.form.validation.subjectMin', 'El asunto debe tener al menos 5 caracteres');
     }
 
     // Message validation
     if (!formData.message.trim()) {
-      newErrors.message = 'El mensaje es requerido';
+      newErrors.message = t('contact.form.validation.messageRequired', 'El mensaje es requerido');
     } else if (formData.message.trim().length < 20) {
-      newErrors.message = 'El mensaje debe tener al menos 20 caracteres';
+      newErrors.message = t('contact.form.validation.messageMin', 'El mensaje debe tener al menos 20 caracteres');
     }
 
     setErrors(newErrors);
@@ -181,11 +183,10 @@ export const Contact: React.FC = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <h2 className="mb-4 text-4xl font-bold text-gray-900 lg:text-5xl dark:text-white">
-            Hablemos sobre tu <span className="text-gradient">Proyecto</span>
+            {t('contact.title')} <span className="text-gradient">{t('contact.titleHighlight', 'Proyecto')}</span>
           </h2>
           <p className="max-w-3xl mx-auto text-xl text-gray-600 dark:text-gray-400">
-            ¿Tienes una idea genial? ¿Necesitas ayuda con tu proyecto? 
-            Me encantaría escucharte y ver cómo podemos trabajar juntos.
+            {t('contact.subtitle')}
           </p>
         </div>
 

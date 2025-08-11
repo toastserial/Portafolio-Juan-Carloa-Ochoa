@@ -18,21 +18,21 @@ export const skills: Skill[] = [
     color: '#3178C6'
   },
   {
-    name: 'JavaScript',
+  name: 'JavaScript',
     level: 95,
     category: 'frontend',
     icon: '📜',
     color: '#F7DF1E'
   },
   {
-    name: 'Next.js',
+  name: 'Next.js',
     level: 85,
     category: 'frontend',
     icon: '▲',
     color: '#000000'
   },
   {
-    name: 'Tailwind CSS',
+  name: 'Tailwind CSS',
     level: 90,
     category: 'frontend',
     icon: '🎨',
@@ -41,35 +41,35 @@ export const skills: Skill[] = [
 
   // Backend
   {
-    name: 'Node.js',
+  name: 'Node.js',
     level: 88,
     category: 'backend',
     icon: '🟢',
     color: '#339933'
   },
   {
-    name: 'Express.js',
+  name: 'Express.js',
     level: 85,
     category: 'backend',
     icon: '🚂',
     color: '#000000'
   },
   {
-    name:'PHP',
+  name: 'PHP',
     level: 80,
     category: 'backend',
     icon: '🐘',
     color: '#777BB4'
   },
   {
-    name: 'MySQL',
+  name: 'MySQL',
     level: 82,
     category: 'backend',
     icon: '🐬',
     color: '#3776AB'
   },
   {
-    name: 'PostgreSQL',
+  name: 'PostgreSQL',
     level: 50,
     category: 'backend',
     icon: '🐘',
@@ -78,14 +78,14 @@ export const skills: Skill[] = [
 
   // Tools
   {
-    name: 'Git',
+  name: 'Git',
     level: 90,
     category: 'tools',
     icon: '<>',
     color: '#F05032'
   },
   {
-    name: 'Docker',
+  name: 'Docker',
     level: 75,
     category: 'tools',
     icon: '🐳',
@@ -94,14 +94,14 @@ export const skills: Skill[] = [
 
   // Design
   {
-    name: 'Figma',
+  name: 'Figma',
     level: 70,
     category: 'design',
     icon: '🎨',
     color: '#F24E1E'
   },
   {
-    name: 'Excalidraw',
+  name: 'Excalidraw',
     level: 60,
     category: 'design',
     icon: '✏️',
