@@ -39,12 +39,21 @@ export const I18nWrapper: React.FC<I18nWrapperProps> = ({ children }) => {
     try {
       await i18n.changeLanguage(lng);
       setLanguage(lng);
-      
-      // Update URL without page reload
+
       const currentPath = window.location.pathname;
-      const pathWithoutLang = currentPath.replace(/^\/(es|en)/, '') || '/';
+      // Remover prefijo de idioma actual si existe
+      let pathWithoutLang = currentPath.replace(/^\/(es|en)(?=\/|$)/, '');
+      // Normalizar barras finales
+      if (pathWithoutLang.endsWith('/') && pathWithoutLang !== '/') {
+        pathWithoutLang = pathWithoutLang.slice(0, -1);
+      }
+      if (pathWithoutLang === '/' || pathWithoutLang === '') {
+        pathWithoutLang = '';
+      }
       const newPath = `/${lng}${pathWithoutLang}`;
-      window.history.pushState({}, '', newPath);
+      if (window.location.pathname !== newPath) {
+        window.history.pushState({}, '', newPath);
+      }
     } catch (error) {
       console.warn('Language change error:', error);
     }

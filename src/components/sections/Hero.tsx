@@ -58,11 +58,12 @@ export const Hero: React.FC = () => {
         {/* Profile Image */}
         <div className="mt-20 animate-fade-in">
           <div className="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-full shadow-2xl ring-4 ring-white/20 dark:ring-gray-800/20">
-            <img 
-              src="me.png" 
-              alt="Juan Carlos Ochoa Guzmán" 
-              className="object-cover duration-500 w-fullansition-transform h- hover:scale-110"
-            />
+                        <img 
+                          // Ruta absoluta para funcionar correctamente en /es, /en, etc.
+                          src="/me.png" 
+                          alt="Juan Carlos Ochoa Guzmán" 
+                          className="object-cover duration-500 w-fullansition-transform h- hover:scale-110"
+                        />
           </div>
         </div>
 
