@@ -31,7 +31,9 @@
       "mobile": "Móvil",
       "api": "API"
     },
-    "search": "Buscar proyectos o tecnologías..."
+    "search": "Buscar proyectos o tecnologías...",
+    "talk": "¿Interesado en trabajar juntos?",
+    "buttonTalk": "Hablemos de tu proyecto"
   },
   "skills": {
     "title": "Mis",
@@ -44,25 +46,55 @@
       "database": "Base de Datos",
       "tools": "Herramientas",
       "design": "Diseño"
+    },
+    "description": "Un resumen de las tecnologías y herramientas que domino, organizadas por categorías. Siempre aprendiendo y manteniéndome actualizado con las últimas tendencias.",
+    "avg": "Nivel Promedio: ",
+    "ability": "Hablidades",
+    "skillsDescription": {
+      "continuousLearning": {
+        "title": "Aprendizaje Continuo",
+        "description": "Siempre explorando nuevas tecnologías y mejorando mis habilidades existentes"
+      },
+      "agileDevelopment": {
+        "title": "Desarrollo Ágil",
+        "description": "Experiencia con metodologías ágiles y mejores prácticas de desarrollo"
+      },
+      "qualityFocus": {
+        "title": "Enfoque en Calidad",
+        "description": "Código limpio, testing y documentación como pilares fundamentales"
+      }
+    },
+    "sk": {
+      "skillsQuestion": "¿Necesitas estas habilidades en tu proyecto?",
+      "skillsCTA": "Estoy disponible para colaborar en proyectos desafiantes y emocionantes.",
+      "collaborateTogether": "Colaboremos juntos"
+    },
+    "levels": {
+      "expert": "🏆 Experto",
+      "advanced": "🎯 Avanzado",
+      "intermediate": "📈 Intermedio",
+      "learning": "🌱 Aprendiendo"
     }
   },
   "contact": {
     "title": "Hablemos sobre tu",
-    "titleHighlight": "Proyecto", 
+    "titleHighlight": "Proyecto",
     "subtitle": "¿Tienes una idea genial? ¿Necesitas ayuda con tu proyecto? Me encantaría escucharte y ver cómo podemos trabajar juntos.",
     "form": {
-      "name": "Nombre",
-      "namePlaceholder": "Tu nombre",
-      "email": "Email",
+      "msgme": "Envíame un Mensaje",
+      "name": "Nombre completo *",
+      "namePlaceholder": "Tu Nombre Completo",
+      "email": "Email *",
       "emailPlaceholder": "tu@email.com",
-      "subject": "Asunto",
+      "subject": "Asunto *",
       "subjectPlaceholder": "Asunto del mensaje",
       "message": "Mensaje",
-      "messagePlaceholder": "Cuéntame sobre tu proyecto...",
+      "messagePlaceholder": "Cuéntame sobre tu proyecto, ideas, o cualquier pregunta que tengas...",
       "send": "Enviar Mensaje",
       "sending": "Enviando...",
       "success": "¡Mensaje enviado exitosamente!",
       "error": "Error al enviar el mensaje. Inténtalo de nuevo.",
+      "quantity": "Carácteres",
       "validation": {
         "nameRequired": "El nombre es requerido",
         "nameMin": "El nombre debe tener al menos 2 caracteres",
@@ -78,7 +110,23 @@
       "title": "Información de Contacto",
       "email": "Email",
       "phone": "Teléfono",
-      "location": "Ubicación"
+      "location": "Ubicación",
+      "follow": "Sígueme en: "
+    },
+    "available": "Disponible para nuevos proyectos",
+    "respond": "Respondo generalmente en menos de 24 horas",
+    "extras": "Mientras más detalles me proporciones sobre tu proyecto, mejor podré entender tus necesidades y brindarte una respuesta más precisa."
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Respuestas a las consultas más comunes",
+    "items": {
+      "question1": "¿Cuál es tu proceso de trabajo?",
+      "answer1": "Comenzamos con una consulta inicial, seguida de planificación detallada, desarrollo iterativo con feedback constante, y entrega final con soporte.",
+      "question2": "¿Cuánto tiempo toma un proyecto?",
+      "answer2": "Depende de la complejidad. Un sitio web simple puede tomar 2-4 semanas, mientras que aplicaciones más complejas pueden requerir 2-6 meses.",
+      "question3": "¿Trabajas con equipos remotos?",
+      "answer3": "¡Absolutamente! Tengo experiencia trabajando con equipos distribuidos usando herramientas como Slack, Zoom, GitHub y metodologías ágiles."
     }
   },
   "footer": {
@@ -89,7 +137,16 @@
     "backToTop": "Volver arriba",
     "rights": "Todos los derechos reservados.",
     "madeWith": "Hecho con",
-    "by": "por"
+    "by": "por",
+    "services": [
+      "Desarrollo Frontend",
+      "Desarrollo Full Stack",
+      "UI/UX Design",
+      "Consultoría Tech"
+    ],
+    "status": "Estado",
+    "newsletter": "Boletín",
+    "newsletterDescription": "Recibe actualizaciones sobre mis proyectos y artículos"
   },
   "theme": {
     "light": "Claro",

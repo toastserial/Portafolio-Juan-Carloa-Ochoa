@@ -189,10 +189,10 @@ export const Projects: React.FC = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <p className="mb-6 text-lg text-gray-600 dark:text-gray-400">
-            ¿Interesado en trabajar juntos?
+            {t('projects.talk')}
           </p>
           <button className="px-8 py-4 font-medium text-white transition-all duration-300 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 hover:shadow-xl">
-            Hablemos sobre tu proyecto
+            {t('projects.buttonTalk')}
           </button>
         </div>
       </div>

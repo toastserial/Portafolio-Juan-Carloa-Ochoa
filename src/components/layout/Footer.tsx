@@ -46,12 +46,7 @@ export const Footer: React.FC = () => {
     { name: t('nav.contact'), href: 'contact-section' }
   ];
 
-  const services = [
-    'Desarrollo Frontend',
-    'Desarrollo Full Stack',
-    'UI/UX Design',
-    'Consultoría Tech'
-  ];
+  const services = t('footer.services', { returnObjects: true }) as string[];
 
   return (
     <footer className="relative overflow-hidden text-white bg-gray-900 dark:bg-black">
@@ -121,7 +116,7 @@ export const Footer: React.FC = () => {
 
             {/* Services */}
             <div>
-              <h3 className="mb-6 text-lg font-semibold text-white">{t('footer.experience', 'Experiencia')}</h3>
+              <h3 className="mb-6 text-lg font-semibold text-white">{t('footer.experience')}</h3>
               <ul className="space-y-3">
                 {services.map((service, index) => (
                   <li key={index} className="flex items-center text-gray-400">
@@ -134,7 +129,7 @@ export const Footer: React.FC = () => {
 
             {/* Contact Info */}
             <div>
-              <h3 className="mb-6 text-lg font-semibold text-white">{t('contact.info.title', 'Contacto')}</h3>
+              <h3 className="mb-6 text-lg font-semibold text-white">{t('contact.info.title')}</h3>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <Mail className="flex-shrink-0 w-5 h-5 mt-1 text-blue-400" />
@@ -154,19 +149,19 @@ export const Footer: React.FC = () => {
                     <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400">Estado</p>
-                    <p className="font-medium text-green-400">Disponible para proyectos</p>
+                    <p className="text-sm text-gray-400">{t('footer.status')}</p>
+                    <p className="font-medium text-green-400">{t('contact.available')}</p>
                   </div>
                 </div>
               </div>
 
               {/* Newsletter */}
               <div className="mt-8">
-                <h4 className="mb-3 text-sm font-semibold text-white">Newsletter</h4>
+                <h4 className="mb-3 text-sm font-semibold text-white">{t('footer.newsletter')}</h4>
                 <div className="flex">
                   <input
                     type="email"
-                    placeholder="Tu email"
+                    placeholder={t('contact.form.emailPlaceholder')}
                     className="flex-1 px-3 py-2 text-sm text-white placeholder-gray-400 bg-gray-800 border border-gray-700 rounded-l-lg dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                   <button className="px-4 py-2 transition-colors duration-200 bg-blue-600 rounded-r-lg hover:bg-blue-700">
@@ -174,7 +169,7 @@ export const Footer: React.FC = () => {
                   </button>
                 </div>
                 <p className="mt-2 text-xs text-gray-500">
-                  Recibe actualizaciones sobre mis proyectos y artículos
+                  {t('footer.newsletterDescription')}
                 </p>
               </div>
             </div>

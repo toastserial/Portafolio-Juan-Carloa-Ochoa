@@ -15,6 +15,8 @@ interface SkillCardProps {
 const SkillCard: React.FC<SkillCardProps> = ({ skill, index, isVisible }) => {
   const [animatedLevel, setAnimatedLevel] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  // Hook de traducción (faltaba, por eso 't' no existía en este componente)
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isVisible) {
@@ -86,9 +88,9 @@ const SkillCard: React.FC<SkillCardProps> = ({ skill, index, isVisible }) => {
 
       {/* Skill level indicator */}
       <div className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-        {skill.level >= 90 ? '🏆 Expert' : 
-         skill.level >= 80 ? '🎯 Advanced' : 
-         skill.level >= 70 ? '📈 Intermediate' : '🌱 Learning'}
+        {skill.level >= 90 ? (t('skills.levels.expert')) : 
+         skill.level >= 80 ? (t('skills.levels.advanced')) : 
+         skill.level >= 70 ? (t('skills.levels.intermediate')) : (t('skills.levels.learning'))}
       </div>
     </div>
   );
@@ -145,19 +147,18 @@ export const Skills: React.FC = () => {
             {t('skills.title')} <span className="text-gradient">{t('skills.titleHighlight', 'Habilidades')}</span>
           </h2>
           <p className="max-w-3xl mx-auto mb-8 text-xl text-gray-600 dark:text-gray-400">
-            Un resumen de las tecnologías y herramientas que domino, organizadas por categorías. 
-            Siempre aprendiendo y manteniéndome actualizado con las últimas tendencias.
+            {t('skills.description')}
           </p>
           
           {/* Stats */}
           <div className="flex items-center justify-center space-x-8 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
-              <span>Nivel promedio: {averageLevel}%</span>
+              <span>{t('skills.avg')} {averageLevel}%</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-              <span>{filteredSkills.length} habilidades</span>
+              <span>{filteredSkills.length} {t('skills.ability')}</span>
             </div>
           </div>
         </div>
@@ -213,30 +214,30 @@ export const Skills: React.FC = () => {
           <div className="p-6 text-center transition-transform duration-300 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-xl hover:scale-105">
             <div className="mb-3 text-3xl animate-bounce">🚀</div>
             <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-              Aprendizaje Continuo
+              {t('skills.skillsDescription.continuousLearning.title')}
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Siempre explorando nuevas tecnologías y mejorando mis habilidades existentes
+              {t('skills.skillsDescription.continuousLearning.description')}
             </p>
           </div>
 
           <div className="p-6 text-center transition-transform duration-300 bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/10 dark:to-blue-900/10 rounded-xl hover:scale-105">
             <div className="mb-3 text-3xl animate-pulse">⚡</div>
             <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-              Desarrollo Ágil
+              {t('skills.skillsDescription.agileDevelopment.title')}
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Experiencia con metodologías ágiles y mejores prácticas de desarrollo
+              {t('skills.skillsDescription.agileDevelopment.description')}
             </p>
           </div>
 
           <div className="p-6 text-center transition-transform duration-300 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 rounded-xl hover:scale-105">
             <div className="mb-3 text-3xl animate-spin-slow">🎯</div>
             <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-              Enfoque en Calidad
+              {t('skills.skillsDescription.qualityFocus.title')}
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Código limpio, testing y documentación como pilares fundamentales
+              {t('skills.skillsDescription.qualityFocus.description')}
             </p>
           </div>
         </div>
@@ -246,13 +247,13 @@ export const Skills: React.FC = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-            ¿Necesitas estas habilidades en tu proyecto?
+            {t('skills.sk.collaborateTogether')}
           </h3>
           <p className="mb-6 text-gray-600 dark:text-gray-400">
-            Estoy disponible para colaborar en proyectos desafiantes y emocionantes
+            {t('skills.sk.skillsCTA')}
           </p>
           <button className="px-8 py-4 font-medium text-white transition-all duration-300 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 hover:shadow-xl">
-            Colaboremos juntos
+           {t('skills.sk.collaborateTogether')}
           </button>
         </div>
       </div>
