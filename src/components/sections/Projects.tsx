@@ -20,9 +20,7 @@ export const Projects: React.FC = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
+        setIsVisible(entry.isIntersecting);
       },
       { threshold: 0.1 }
     );
@@ -32,7 +30,6 @@ export const Projects: React.FC = () => {
 
     return () => observer.disconnect();
   }, []);
-
   useEffect(() => {
     let filtered = projects;
 

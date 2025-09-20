@@ -1,5 +1,5 @@
 // src/components/sections/Hero.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ChevronDown, Download, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -8,6 +8,8 @@ export const Hero: React.FC = () => {
   const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [animationKey, setAnimationKey] = useState(0); // Key para forzar re-render de animaciones
+  const sectionRef = useRef<HTMLElement>(null);
 
   const roles = [
     t('hero.roles.frontend'),
@@ -22,6 +24,38 @@ export const Hero: React.FC = () => {
     setCurrentRole(0);
     setIsDeleting(false);
   }, [roles.join('')]);
+
+  // Intersection Observer para detectar cuando la sección entra en viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+            // Reinicia las animaciones incrementando el key
+            setAnimationKey(prev => prev + 1);
+            // También reinicia la animación de typing
+            setDisplayText('');
+            setCurrentRole(0);
+            setIsDeleting(false);
+          }
+        });
+      },
+      {
+        threshold: [0.3], // Se activa cuando al menos 30% de la sección es visible
+        rootMargin: '0px 0px -20% 0px' // Margen para activar un poco antes
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const currentText = roles[currentRole];
@@ -54,20 +88,24 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <section id="inicio" className="relative flex items-center justify-center min-h-screen overflow-hidden">
+    <section 
+      id="inicio" 
+      ref={sectionRef}
+      className="relative flex items-center justify-center min-h-screen overflow-hidden"
+    >
       {/* Background Effects */}
       <div className="absolute inset-0 gradient-bg" />
       
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Animated Background Elements - con key para reiniciar */}
+      <div key={`bg-${animationKey}`} className="absolute inset-0 overflow-hidden">
         <div className="absolute rounded-full -top-40 -right-40 w-80 h-80 bg-blue-400/10 blur-3xl animate-pulse" />
         <div className="absolute delay-1000 rounded-full -bottom-40 -left-40 w-80 h-80 bg-purple-400/10 blur-3xl animate-pulse" />
-        <div className="absolute transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left/2 w-96 h-96 bg-gradient-to-r from-blue-400/5 to-purple-400/5 blur-3xl animate-spin-slow" />
+        <div className="absolute transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 w-96 h-96 bg-gradient-to-r from-blue-400/5 to-purple-400/5 blur-3xl animate-spin-slow" />
       </div>
 
       <div className="relative z-10 max-w-4xl px-4 mx-auto text-center sm:px-6 lg:px-8">
-        {/* Profile Image */}
-        <div className="mt-20 animate-fade-in">
+        {/* Profile Image - con key para reiniciar animación */}
+        <div key={`profile-${animationKey}`} className="mt-20 animate-fade-in">
           <div className="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-full shadow-2xl ring-4 ring-white/20 dark:ring-gray-800/20">
             <img 
               src="me.png" 
@@ -77,8 +115,8 @@ export const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="animate-slide-up">
+        {/* Main Content - con key para reiniciar animación */}
+        <div key={`content-${animationKey}`} className="animate-slide-up">
           <h1 className="mb-6 text-4xl font-bold text-gray-900 sm:text-5xl lg:text-6xl dark:text-white">
             {t('hero.greeting')}{' '}
             <span className="text-gradient">{t('hero.name')}</span>
@@ -117,8 +155,9 @@ export const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - con key para reiniciar animación */}
         <button 
+          key={`scroll-${animationKey}`}
           onClick={scrollToProjects}
           className="absolute mt-2 text-gray-400 transition-colors duration-300 transform -translate-x-1/2 left-1/2 hover:text-blue-500 animate-bounce"
           aria-label="Scroll to next section"
@@ -135,6 +174,34 @@ export const Hero: React.FC = () => {
         }
         .animate-spin-slow {
           animation: spin-slow 20s linear infinite;
+        }
+        
+        @keyframes fade-in {
+          from { 
+            opacity: 0; 
+            transform: translateY(20px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 1s ease-out;
+        }
+        
+        @keyframes slide-up {
+          from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
+        }
+        .animate-slide-up {
+          animation: slide-up 1.2s ease-out 0.3s both;
         }
       `}</style>
     </section>
