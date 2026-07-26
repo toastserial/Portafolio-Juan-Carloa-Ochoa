@@ -25,12 +25,12 @@ export function PortfolioCanvas({
   return (
     <Canvas
       camera={{ fov: 34, position: [0, 0.3, 6.5] }}
-      dpr={isCompact ? 1 : [1, 1.5]}
+      dpr={isCompact ? [1.25, 1.75] : [1, 1.5]}
       frameloop="always"
       gl={{
         alpha: true,
-        antialias: !isCompact,
-        powerPreference: isCompact ? 'low-power' : 'high-performance',
+        antialias: true,
+        powerPreference: 'high-performance',
       }}
       shadows={false}
     >
@@ -45,21 +45,19 @@ export function PortfolioCanvas({
           </Html>
         }
       >
-        {!isCompact && (
-          <Grid
-            args={[12, 12]}
-            cellColor="#343943"
-            cellSize={0.45}
-            cellThickness={0.45}
-            fadeDistance={9}
-            fadeStrength={1.3}
-            infiniteGrid
-            position={[0, -2.08, 0]}
-            sectionColor="#695022"
-            sectionSize={2.25}
-            sectionThickness={0.8}
-          />
-        )}
+        <Grid
+          args={[12, 12]}
+          cellColor="#343943"
+          cellSize={0.45}
+          cellThickness={0.45}
+          fadeDistance={9}
+          fadeStrength={1.3}
+          infiniteGrid
+          position={[0, -2.08, 0]}
+          sectionColor="#695022"
+          sectionSize={2.25}
+          sectionThickness={0.8}
+        />
         <Bounds clip fit margin={1.06} observe>
           <group>
             <mesh position={[0, 0, -1]}>
