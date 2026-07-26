@@ -10,7 +10,13 @@ const modeColors: Record<WorkspaceMode, string> = {
   software: '#a879d8',
 }
 
-export function PortfolioCanvas({ mode }: { mode: WorkspaceMode }) {
+export function PortfolioCanvas({
+  mode,
+  onReady,
+}: {
+  mode: WorkspaceMode
+  onReady: () => void
+}) {
   const isCompact = window.matchMedia('(max-width: 47.99rem)').matches
   const modeColor = modeColors[mode]
 
@@ -76,7 +82,7 @@ export function PortfolioCanvas({ mode }: { mode: WorkspaceMode }) {
                 />
               </mesh>
             </group>
-            <PortfolioModel />
+            <PortfolioModel onReady={onReady} />
           </group>
         </Bounds>
         {!isCompact && (

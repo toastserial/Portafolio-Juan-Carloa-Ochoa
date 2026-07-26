@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useInView } from '../../hooks/useInView'
 import { SceneErrorBoundary } from './SceneErrorBoundary'
 import { ThoughtBubbles } from '../ui/ThoughtBubbles'
@@ -28,6 +28,8 @@ export function PortfolioScenePlaceholder({
   const [canLoadScene, setCanLoadScene] = useState(
     () => !window.matchMedia('(max-width: 40rem)').matches,
   )
+  const [sceneReady, setSceneReady] = useState(false)
+  const markSceneReady = useCallback(() => setSceneReady(true), [])
 
   useEffect(() => {
     if (canLoadScene) return
@@ -88,17 +90,19 @@ export function PortfolioScenePlaceholder({
       {hasEntered && canLoadScene ? (
         <SceneErrorBoundary fallback={fallback}>
           <Suspense fallback={fallback}>
-            <PortfolioCanvas mode={mode} />
+            <PortfolioCanvas mode={mode} onReady={markSceneReady} />
           </Suspense>
         </SceneErrorBoundary>
       ) : (
         fallback
       )}
-      <ThoughtBubbles
-        activeMode={mode}
-        locale={locale}
-        onModeChange={onModeChange}
-      />
+      {sceneReady && (
+        <ThoughtBubbles
+          activeMode={mode}
+          locale={locale}
+          onModeChange={onModeChange}
+        />
+      )}
       <div className="pointer-events-none absolute inset-x-5 bottom-5 flex items-center justify-between rounded-full border border-white/10 bg-canvas/70 px-4 py-2 text-[0.65rem] uppercase tracking-[0.16em] text-muted backdrop-blur">
         <span>Data → Software</span>
         <span className="text-accent">

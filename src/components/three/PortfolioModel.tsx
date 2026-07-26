@@ -3,16 +3,22 @@ import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import type { Group } from 'three'
 
-export function PortfolioModel() {
+export function PortfolioModel({ onReady }: { onReady: () => void }) {
   const group = useRef<Group>(null)
   const entryProgress = useRef(0)
   const spinTarget = useRef(0)
   const clickKick = useRef(0)
+  const hasReportedReady = useRef(false)
   const { scene } = useGLTF('/models/funkopop.glb')
   const model = useMemo(() => scene.clone(), [scene])
 
   useFrame((state, delta) => {
     if (!group.current) return
+    if (!hasReportedReady.current) {
+      hasReportedReady.current = true
+      onReady()
+    }
+
     const time = state.clock.elapsedTime
     entryProgress.current = Math.min(1, entryProgress.current + delta * 1.45)
     clickKick.current += (0 - clickKick.current) * delta * 4.8

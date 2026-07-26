@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Braces, Code2, Database, Workflow } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Locale, WorkspaceMode } from '../../types/content'
 
 const thoughts = [
@@ -57,13 +57,26 @@ export function ThoughtBubbles({
 }) {
   const [activeThought, setActiveThought] = useState<string | null>(null)
   const reduceMotion = useReducedMotion()
+  const [canFloat, setCanFloat] = useState(
+    () => window.matchMedia('(hover: hover) and (pointer: fine)').matches,
+  )
+
+  useEffect(() => {
+    const media = window.matchMedia('(hover: hover) and (pointer: fine)')
+    const update = () => setCanFloat(media.matches)
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
 
   return (
-    <div
+    <motion.div
+      animate={{ opacity: 1 }}
       aria-label={
         locale === 'es' ? 'Ideas alrededor de Juan' : 'Ideas around Juan'
       }
       className="thought-bubbles"
+      initial={false}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
     >
       {thoughts.map(({ detail, icon: Icon, id, label, mode }, index) => {
         const isActive = activeThought === id
@@ -72,7 +85,7 @@ export function ThoughtBubbles({
         return (
           <motion.button
             animate={
-              reduceMotion
+              reduceMotion || !canFloat
                 ? undefined
                 : {
                     y: [0, index % 2 === 0 ? -7 : 6, 0],
@@ -111,6 +124,6 @@ export function ThoughtBubbles({
           </motion.button>
         )
       })}
-    </div>
+    </motion.div>
   )
 }
