@@ -9,14 +9,18 @@ export function PortfolioModel({ onReady }: { onReady: () => void }) {
   const spinTarget = useRef(0)
   const clickKick = useRef(0)
   const hasReportedReady = useRef(false)
+  const renderedFrames = useRef(0)
   const { scene } = useGLTF('/models/funkopop.glb')
   const model = useMemo(() => scene.clone(), [scene])
 
   useFrame((state, delta) => {
     if (!group.current) return
     if (!hasReportedReady.current) {
-      hasReportedReady.current = true
-      onReady()
+      renderedFrames.current += 1
+      if (renderedFrames.current >= 3) {
+        hasReportedReady.current = true
+        onReady()
+      }
     }
 
     const time = state.clock.elapsedTime

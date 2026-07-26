@@ -54,8 +54,13 @@ export function TechParallaxLayers({ mode }: { mode: WorkspaceMode }) {
   useEffect(() => {
     const media = window.matchMedia('(max-width: 40rem)')
     const update = () => setIsCompact(media.matches)
-    media.addEventListener('change', update)
-    return () => media.removeEventListener('change', update)
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', update)
+      return () => media.removeEventListener('change', update)
+    }
+
+    media.addListener(update)
+    return () => media.removeListener(update)
   }, [])
 
   const backgroundY = useTransform(progress, [0, 1], ['0%', '7%'])

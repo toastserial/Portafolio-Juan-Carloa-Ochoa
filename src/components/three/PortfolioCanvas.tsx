@@ -1,6 +1,6 @@
 import { Bounds, ContactShadows, Grid, Html } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
+import { Suspense, useEffect } from 'react'
 import { PortfolioModel } from './PortfolioModel'
 import type { WorkspaceMode } from '../../types/content'
 
@@ -12,9 +12,11 @@ const modeColors: Record<WorkspaceMode, string> = {
 
 export function PortfolioCanvas({
   mode,
+  onContextLost,
   onReady,
 }: {
   mode: WorkspaceMode
+  onContextLost: () => void
   onReady: () => void
 }) {
   const isCompact = window.matchMedia('(max-width: 47.99rem)').matches
@@ -23,11 +25,16 @@ export function PortfolioCanvas({
   return (
     <Canvas
       camera={{ fov: 34, position: [0, 0.3, 6.5] }}
-      dpr={isCompact ? [1, 1.2] : [1, 1.5]}
+      dpr={isCompact ? 1 : [1, 1.5]}
       frameloop="always"
-      gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
+      gl={{
+        alpha: true,
+        antialias: !isCompact,
+        powerPreference: isCompact ? 'low-power' : 'high-performance',
+      }}
       shadows={false}
     >
+      <WebGLContextMonitor onContextLost={onContextLost} />
       <ambientLight intensity={1.7} />
       <directionalLight intensity={3.2} position={[4, 6, 5]} />
       <directionalLight color={modeColor} intensity={1.35} position={[-4, 1, 2]} />
@@ -38,19 +45,21 @@ export function PortfolioCanvas({
           </Html>
         }
       >
-        <Grid
-          args={[12, 12]}
-          cellColor="#343943"
-          cellSize={0.45}
-          cellThickness={0.45}
-          fadeDistance={9}
-          fadeStrength={1.3}
-          infiniteGrid
-          position={[0, -2.08, 0]}
-          sectionColor="#695022"
-          sectionSize={2.25}
-          sectionThickness={0.8}
-        />
+        {!isCompact && (
+          <Grid
+            args={[12, 12]}
+            cellColor="#343943"
+            cellSize={0.45}
+            cellThickness={0.45}
+            fadeDistance={9}
+            fadeStrength={1.3}
+            infiniteGrid
+            position={[0, -2.08, 0]}
+            sectionColor="#695022"
+            sectionSize={2.25}
+            sectionThickness={0.8}
+          />
+        )}
         <Bounds clip fit margin={1.06} observe>
           <group>
             <mesh position={[0, 0, -1]}>
@@ -98,4 +107,25 @@ export function PortfolioCanvas({
       </Suspense>
     </Canvas>
   )
+}
+
+function WebGLContextMonitor({
+  onContextLost,
+}: {
+  onContextLost: () => void
+}) {
+  const gl = useThree((state) => state.gl)
+
+  useEffect(() => {
+    const canvas = gl.domElement
+    const handleContextLost = (event: Event) => {
+      event.preventDefault()
+      onContextLost()
+    }
+
+    canvas.addEventListener('webglcontextlost', handleContextLost)
+    return () => canvas.removeEventListener('webglcontextlost', handleContextLost)
+  }, [gl, onContextLost])
+
+  return null
 }

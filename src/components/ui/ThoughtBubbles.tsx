@@ -64,8 +64,13 @@ export function ThoughtBubbles({
   useEffect(() => {
     const media = window.matchMedia('(hover: hover) and (pointer: fine)')
     const update = () => setCanFloat(media.matches)
-    media.addEventListener('change', update)
-    return () => media.removeEventListener('change', update)
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', update)
+      return () => media.removeEventListener('change', update)
+    }
+
+    media.addListener(update)
+    return () => media.removeListener(update)
   }, [])
 
   return (

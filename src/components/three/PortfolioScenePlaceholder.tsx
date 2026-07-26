@@ -30,7 +30,13 @@ export function PortfolioScenePlaceholder({
   )
   const [canLoadScene, setCanLoadScene] = useState(() => !isCompact)
   const [sceneReady, setSceneReady] = useState(false)
+  const [sceneFailed, setSceneFailed] = useState(false)
   const markSceneReady = useCallback(() => setSceneReady(true), [])
+  const handleContextLost = useCallback(() => {
+    setSceneReady(false)
+    setSceneFailed(true)
+    setCanLoadScene(false)
+  }, [])
 
   useEffect(() => {
     const media = window.matchMedia('(max-width: 40rem)')
@@ -38,12 +44,17 @@ export function PortfolioScenePlaceholder({
       setIsCompact(media.matches)
       if (!media.matches) setCanLoadScene(true)
     }
-    media.addEventListener('change', update)
-    return () => media.removeEventListener('change', update)
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', update)
+      return () => media.removeEventListener('change', update)
+    }
+
+    media.addListener(update)
+    return () => media.removeListener(update)
   }, [])
 
   useEffect(() => {
-    if (canLoadScene) return
+    if (canLoadScene || sceneFailed) return
 
     let idleId: number | undefined
     let timerId: ReturnType<typeof globalThis.setTimeout> | undefined
@@ -71,7 +82,7 @@ export function PortfolioScenePlaceholder({
       if (idleId !== undefined) window.cancelIdleCallback(idleId)
       if (timerId !== undefined) globalThis.clearTimeout(timerId)
     }
-  }, [canLoadScene])
+  }, [canLoadScene, sceneFailed])
 
   const moveScene = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === 'touch' || !ref.current) return
@@ -94,9 +105,12 @@ export function PortfolioScenePlaceholder({
   return (
     <div
       aria-label={label}
-      className={`scene-frame scene-mode-${mode} ${isCompact ? 'is-compact-scene' : ''} ${sceneReady ? 'is-scene-live' : ''} relative flex aspect-[4/5] min-h-80 items-center justify-center overflow-hidden rounded-[2rem] border border-line bg-surface`}
+      className={`scene-frame scene-mode-${mode} relative flex aspect-[4/5] min-h-80 items-center justify-center overflow-hidden rounded-[2rem] border border-line bg-surface`}
       onPointerDown={() => {
-        if (isCompact) setCanLoadScene(true)
+        if (isCompact) {
+          setSceneFailed(false)
+          setCanLoadScene(true)
+        }
       }}
       onPointerLeave={resetScene}
       onPointerMove={moveScene}
@@ -117,20 +131,16 @@ export function PortfolioScenePlaceholder({
       {hasEntered && canLoadScene ? (
         <SceneErrorBoundary fallback={canvasFallback}>
           <Suspense fallback={canvasFallback}>
-            <PortfolioCanvas mode={mode} onReady={markSceneReady} />
+            <PortfolioCanvas
+              mode={mode}
+              onContextLost={handleContextLost}
+              onReady={markSceneReady}
+            />
           </Suspense>
         </SceneErrorBoundary>
       ) : !isCompact ? (
         fallback
       ) : null}
-      {isCompact && (
-        <div
-          aria-hidden="true"
-          className={`scene-activation-effect ${sceneReady ? 'is-active' : ''}`}
-        >
-          <span />
-        </div>
-      )}
       {(sceneReady || isCompact) && (
         <ThoughtBubbles
           activeMode={mode}
