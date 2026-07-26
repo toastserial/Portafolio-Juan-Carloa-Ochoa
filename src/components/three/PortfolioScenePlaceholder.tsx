@@ -25,11 +25,22 @@ export function PortfolioScenePlaceholder({
   onModeChange,
 }: PortfolioScenePlaceholderProps) {
   const { ref, hasEntered } = useInView<HTMLDivElement>()
-  const [canLoadScene, setCanLoadScene] = useState(
-    () => !window.matchMedia('(max-width: 40rem)').matches,
+  const [isCompact, setIsCompact] = useState(
+    () => window.matchMedia('(max-width: 40rem)').matches,
   )
+  const [canLoadScene, setCanLoadScene] = useState(() => !isCompact)
   const [sceneReady, setSceneReady] = useState(false)
   const markSceneReady = useCallback(() => setSceneReady(true), [])
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 40rem)')
+    const update = () => {
+      setIsCompact(media.matches)
+      if (!media.matches) setCanLoadScene(true)
+    }
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
 
   useEffect(() => {
     if (canLoadScene) return
@@ -76,34 +87,50 @@ export function PortfolioScenePlaceholder({
   }
 
   const fallback = <SceneFallback label={label} />
+  const canvasFallback = isCompact ? (
+    <span className="sr-only">Loading interactive 3D scene</span>
+  ) : fallback
 
   return (
     <div
       aria-label={label}
       className={`scene-frame scene-mode-${mode} relative flex aspect-[4/5] min-h-80 items-center justify-center overflow-hidden rounded-[2rem] border border-line bg-surface`}
+      onPointerDown={() => {
+        if (isCompact) setCanLoadScene(true)
+      }}
       onPointerLeave={resetScene}
       onPointerMove={moveScene}
       ref={ref}
       role="img"
     >
       <div className="scene-grid absolute inset-0" />
+      {isCompact && (
+        <img
+          alt=""
+          aria-hidden="true"
+          className={`scene-mobile-poster ${sceneReady ? 'is-hidden' : ''}`}
+          decoding="async"
+          fetchPriority="high"
+          src="/images/funko-scene-mobile.jpg"
+        />
+      )}
       {hasEntered && canLoadScene ? (
-        <SceneErrorBoundary fallback={fallback}>
-          <Suspense fallback={fallback}>
+        <SceneErrorBoundary fallback={canvasFallback}>
+          <Suspense fallback={canvasFallback}>
             <PortfolioCanvas mode={mode} onReady={markSceneReady} />
           </Suspense>
         </SceneErrorBoundary>
-      ) : (
+      ) : !isCompact ? (
         fallback
-      )}
-      {sceneReady && (
+      ) : null}
+      {(sceneReady || isCompact) && (
         <ThoughtBubbles
           activeMode={mode}
           locale={locale}
           onModeChange={onModeChange}
         />
       )}
-      <div className="pointer-events-none absolute inset-x-5 bottom-5 flex items-center justify-between rounded-full border border-white/10 bg-canvas/70 px-4 py-2 text-[0.65rem] uppercase tracking-[0.16em] text-muted backdrop-blur">
+      <div className="scene-status pointer-events-none absolute inset-x-5 bottom-5 flex items-center justify-between rounded-full border border-white/10 bg-canvas/70 px-4 py-2 text-[0.65rem] uppercase tracking-[0.16em] text-muted backdrop-blur">
         <span>Data → Software</span>
         <span className="text-accent">
           {mode === 'data'
