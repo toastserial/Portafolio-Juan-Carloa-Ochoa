@@ -1,6 +1,12 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from 'framer-motion'
 import { ArrowDownRight, ChevronDown } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { experience } from '../../data/experience'
 import type { Locale } from '../../types/content'
 import { Reveal } from '../ui/Reveal'
@@ -23,7 +29,17 @@ export function WorkExperienceSection({
 }: WorkExperienceSectionProps) {
   const es = locale === 'es'
   const reduceMotion = useReducedMotion()
+  const timelineRef = useRef<HTMLDivElement>(null)
   const [expandedId, setExpandedId] = useState<string | null>(experience[0]?.id ?? null)
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 72%', 'end 48%'],
+  })
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 95,
+    damping: 24,
+    mass: 0.32,
+  })
 
   return (
     <section className="section-shell" id="experience">
@@ -43,14 +59,11 @@ export function WorkExperienceSection({
         </p>
       </Reveal>
 
-      <div className="experience-timeline">
+      <div className="experience-timeline" ref={timelineRef}>
         <motion.div
           aria-hidden="true"
           className="experience-progress"
-          initial={reduceMotion ? false : { scaleY: 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ amount: 0.2, once: true }}
-          whileInView={reduceMotion ? undefined : { scaleY: 1 }}
+          style={{ scaleY: reduceMotion ? 1 : smoothProgress }}
         />
 
         {experience.map((item, index) => (
