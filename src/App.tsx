@@ -42,7 +42,7 @@ export function App() {
     const configuredSiteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '')
     const siteUrl = configuredSiteUrl || window.location.origin
     const canonicalUrl = `${siteUrl}/${locale}`
-    const socialImage = `${siteUrl}/images/background_funko/background-base.png`
+    const socialImage = `${siteUrl}/images/background_funko/background-base.jpg`
 
     document.title = title
     setCanonical(canonicalUrl)

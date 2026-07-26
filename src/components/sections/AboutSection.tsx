@@ -11,7 +11,7 @@ export function AboutSection({ locale }: { locale: Locale }) {
           alt={es ? 'Retrato de Juan Carlos Ochoa' : 'Portrait of Juan Carlos Ochoa'}
           height="720"
           loading="lazy"
-          src="/images/avatar/juan.png"
+          src="/images/avatar/juan.jpg"
           width="720"
         />
         <span>Honduras · UTC−6</span>

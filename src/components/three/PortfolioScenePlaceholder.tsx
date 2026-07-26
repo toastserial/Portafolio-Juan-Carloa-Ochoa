@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react'
+import { useEffect, useState } from 'react'
 import { useInView } from '../../hooks/useInView'
 import { SceneErrorBoundary } from './SceneErrorBoundary'
 import { ThoughtBubbles } from '../ui/ThoughtBubbles'
@@ -24,6 +25,41 @@ export function PortfolioScenePlaceholder({
   onModeChange,
 }: PortfolioScenePlaceholderProps) {
   const { ref, hasEntered } = useInView<HTMLDivElement>()
+  const [canLoadScene, setCanLoadScene] = useState(
+    () => !window.matchMedia('(max-width: 40rem)').matches,
+  )
+
+  useEffect(() => {
+    if (canLoadScene) return
+
+    let idleId: number | undefined
+    let timerId: ReturnType<typeof globalThis.setTimeout> | undefined
+
+    const loadScene = () => {
+      if (typeof window.requestIdleCallback === 'function') {
+        idleId = window.requestIdleCallback(
+          () => setCanLoadScene(true),
+          { timeout: 1200 },
+        )
+        return
+      }
+
+      timerId = globalThis.setTimeout(() => setCanLoadScene(true), 250)
+    }
+
+    if (document.readyState === 'complete') {
+      loadScene()
+    } else {
+      window.addEventListener('load', loadScene, { once: true })
+    }
+
+    return () => {
+      window.removeEventListener('load', loadScene)
+      if (idleId !== undefined) window.cancelIdleCallback(idleId)
+      if (timerId !== undefined) globalThis.clearTimeout(timerId)
+    }
+  }, [canLoadScene])
+
   const moveScene = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === 'touch' || !ref.current) return
     const bounds = ref.current.getBoundingClientRect()
@@ -49,7 +85,7 @@ export function PortfolioScenePlaceholder({
       role="img"
     >
       <div className="scene-grid absolute inset-0" />
-      {hasEntered ? (
+      {hasEntered && canLoadScene ? (
         <SceneErrorBoundary fallback={fallback}>
           <Suspense fallback={fallback}>
             <PortfolioCanvas mode={mode} />

@@ -83,8 +83,9 @@ export function TechParallaxLayers({ mode }: { mode: WorkspaceMode }) {
       <motion.img
         alt=""
         className="tech-image-layer tech-image-background"
+        decoding="async"
         fetchPriority="high"
-        src={`${layersPath}/background-base.png`}
+        src={`${layersPath}/background-base.jpg`}
         style={
           reduceMotion
             ? undefined
@@ -103,6 +104,7 @@ export function TechParallaxLayers({ mode }: { mode: WorkspaceMode }) {
         <motion.img
           alt=""
           decoding="async"
+          fetchPriority="low"
           src={`${layersPath}/layer-workspace.png`}
           style={reduceMotion ? undefined : { y: workspacePointerY }}
         />
@@ -119,20 +121,28 @@ export function TechParallaxLayers({ mode }: { mode: WorkspaceMode }) {
         <motion.img
           alt=""
           decoding="async"
+          fetchPriority="low"
           src={`${layersPath}/layer-personal-details.png`}
           style={reduceMotion ? undefined : { y: detailsPointerY }}
         />
       </motion.div>}
 
-      <motion.img
-        alt=""
-        className="tech-image-layer tech-image-foreground"
-        decoding="async"
-        src={`${layersPath}/layer-foreground.png`}
-        style={
-          reduceMotion ? undefined : { opacity: fade, x: foregroundX, y: foregroundY }
-        }
-      />
+      <picture>
+        <source
+          media="(max-width: 40rem)"
+          srcSet={`${layersPath}/layer-foreground-mobile.png`}
+        />
+        <motion.img
+          alt=""
+          className="tech-image-layer tech-image-foreground"
+          decoding="async"
+          fetchPriority="low"
+          src={`${layersPath}/layer-foreground.png`}
+          style={
+            reduceMotion ? undefined : { opacity: fade, x: foregroundX, y: foregroundY }
+          }
+        />
+      </picture>
 
       <motion.div
         className="tech-image-motion tech-image-particles"
@@ -145,6 +155,7 @@ export function TechParallaxLayers({ mode }: { mode: WorkspaceMode }) {
         <motion.img
           alt=""
           decoding="async"
+          fetchPriority="low"
           src={`${layersPath}/layer-particles.png`}
           style={reduceMotion ? undefined : { y: particlesPointerY }}
         />
