@@ -1,57 +1,92 @@
-// src/App.tsx
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { I18nWrapper } from './components/providers/I18nWrapperNew';
-import { LanguageRouter } from './components/routing/LanguageRouter';
-import { Header } from './components/layout/Header';
-import { Footer } from './components/layout/Footer';
-import { Hero } from './components/sections/Hero';
-import { Projects } from './components/sections/Projects';
-import { Skills } from './components/sections/Skills';
-import { Contact } from './components/sections/Contact';
+import { useEffect, useState } from 'react'
+import { MainLayout } from './components/layout/MainLayout'
+import { DEFAULT_LOCALE, isLocale } from './lib/locale'
+import { PortfolioPage } from './pages/PortfolioPage'
+import type { Locale } from './types/content'
 
-const HomePage: React.FC = () => (
-  <div className="min-h-screen">
-    <Hero />
-    <Projects />
-    <Skills />
-    <Contact />
-  </div>
-);
-
-// Language-specific wrapper component
-const LanguagePage: React.FC = () => {
-  return <HomePage />;
-};
-
-function App() {
-  return (
-    <I18nWrapper>
-      <ThemeProvider>
-        <Router>
-          <div className="App">
-            <LanguageRouter />
-            <Header />
-            <main>
-              <Routes>
-                {/* Root redirect to default language */}
-                <Route path="/" element={<Navigate to="/es" replace />} />
-                
-                {/* Language-specific routes */}
-                <Route path="/es" element={<LanguagePage />} />
-                <Route path="/en" element={<LanguagePage />} />
-                
-                {/* Fallback for any other route */}
-                <Route path="*" element={<Navigate to="/es" replace />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
-      </ThemeProvider>
-    </I18nWrapper>
-  );
+function localeFromPath(): Locale {
+  const pathLocale = window.location.pathname.split('/')[1]
+  return isLocale(pathLocale) ? pathLocale : DEFAULT_LOCALE
 }
 
-export default App;
+function setMeta(selector: string, content: string) {
+  document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content)
+}
+
+function setCanonical(href: string) {
+  let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+  if (!canonical) {
+    canonical = document.createElement('link')
+    canonical.rel = 'canonical'
+    document.head.append(canonical)
+  }
+  canonical.href = href
+}
+
+export function App() {
+  const [locale, setLocale] = useState(localeFromPath)
+
+  useEffect(() => {
+    const pathLocale = window.location.pathname.split('/')[1]
+
+    if (!isLocale(pathLocale)) {
+      window.history.replaceState({}, '', `/${DEFAULT_LOCALE}${window.location.hash}`)
+    }
+
+    document.documentElement.lang = locale
+    const es = locale === 'es'
+    const title = `Juan Carlos Ochoa — ${es ? 'Desarrollador de Software' : 'Software Developer'}`
+    const description = es
+      ? 'Portafolio de Juan Carlos Ochoa: desarrollo de software, interfaces web, sistemas internos, automatización y soluciones basadas en datos.'
+      : 'Juan Carlos Ochoa’s portfolio: software development, web interfaces, internal systems, automation, and data-informed solutions.'
+    const configuredSiteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '')
+    const siteUrl = configuredSiteUrl || window.location.origin
+    const canonicalUrl = `${siteUrl}/${locale}`
+    const socialImage = `${siteUrl}/images/background_funko/background-base.png`
+
+    document.title = title
+    setCanonical(canonicalUrl)
+    setMeta('meta[name="description"]', description)
+    setMeta('meta[property="og:title"]', title)
+    setMeta('meta[property="og:description"]', description)
+    setMeta('meta[property="og:locale"]', es ? 'es_HN' : 'en_US')
+    setMeta('meta[property="og:url"]', canonicalUrl)
+    setMeta('meta[property="og:image"]', socialImage)
+    setMeta('meta[name="twitter:title"]', title)
+    setMeta('meta[name="twitter:description"]', description)
+    setMeta('meta[name="twitter:image"]', socialImage)
+
+    const handlePopState = () => setLocale(localeFromPath())
+    window.addEventListener('popstate', handlePopState)
+
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [locale])
+
+  useEffect(() => {
+    const sectionId = window.location.hash.slice(1)
+    if (!sectionId) return
+
+    if (sectionId === 'top') {
+      window.scrollTo({ top: 0 })
+      return
+    }
+
+    let secondFrame = 0
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        document.getElementById(sectionId)?.scrollIntoView()
+      })
+    })
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame)
+      window.cancelAnimationFrame(secondFrame)
+    }
+  }, [locale])
+
+  return (
+    <MainLayout locale={locale}>
+      <PortfolioPage locale={locale} />
+    </MainLayout>
+  )
+}
