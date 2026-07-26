@@ -94,7 +94,7 @@ export function PortfolioScenePlaceholder({
   return (
     <div
       aria-label={label}
-      className={`scene-frame scene-mode-${mode} relative flex aspect-[4/5] min-h-80 items-center justify-center overflow-hidden rounded-[2rem] border border-line bg-surface`}
+      className={`scene-frame scene-mode-${mode} ${isCompact ? 'is-compact-scene' : ''} ${sceneReady ? 'is-scene-live' : ''} relative flex aspect-[4/5] min-h-80 items-center justify-center overflow-hidden rounded-[2rem] border border-line bg-surface`}
       onPointerDown={() => {
         if (isCompact) setCanLoadScene(true)
       }}
@@ -123,6 +123,14 @@ export function PortfolioScenePlaceholder({
       ) : !isCompact ? (
         fallback
       ) : null}
+      {isCompact && (
+        <div
+          aria-hidden="true"
+          className={`scene-activation-effect ${sceneReady ? 'is-active' : ''}`}
+        >
+          <span />
+        </div>
+      )}
       {(sceneReady || isCompact) && (
         <ThoughtBubbles
           activeMode={mode}
