@@ -97,6 +97,10 @@ export const projects: Project[] = [
       en: 'Visual direction, frontend architecture, and implementation.',
     },
     period: { es: '2025 — Actualidad', en: '2025 — Present' },
+    image: '/preview/Porfolioview.png',
+    images: [
+      '/preview/Porfolioview.png',
+    ],
     stack: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Three.js'],
     featured: false,
     nextSteps: {

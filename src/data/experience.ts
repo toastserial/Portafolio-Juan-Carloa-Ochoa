@@ -125,4 +125,4 @@ export const experience: Experience[] = [
       },
     ],
   },
-]
+].sort((first, second) => first.startDate.localeCompare(second.startDate))

@@ -64,10 +64,10 @@ export function HeroSection({ locale }: HeroSectionProps) {
             }
           />
         </div>
-        <p className="mt-4 max-w-xl text-base leading-7 text-muted">
+        <p className="max-w-xl mt-4 text-base leading-7 text-muted">
           {isSpanish
-            ? 'Desarrollador frontend y full stack en Honduras. Diseño productos funcionales que convierten complejidad técnica en experiencias claras.'
-            : 'Frontend and full-stack developer in Honduras. I design functional products that turn technical complexity into clear experiences.'}
+            ? 'Full stack en Honduras. Diseño productos funcionales que convierten complejidad técnica en experiencias claras.'
+            : 'Full-stack developer in Honduras. I design functional products that turn technical complexity into clear experiences.'}
         </p>
         <div
           aria-label={isSpanish ? 'Modo del workspace' : 'Workspace mode'}
@@ -89,7 +89,7 @@ export function HeroSection({ locale }: HeroSectionProps) {
             </button>
           ))}
         </div>
-        <div className="mt-9 flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 mt-9">
           <a className="button-primary" href="#work">
             {isSpanish ? 'Explorar trabajo' : 'Explore work'}
             <ArrowDownRight aria-hidden="true" size={17} />

@@ -10,6 +10,7 @@ interface NavigationProps {
 
 export function Navigation({ locale }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string | null>(null)
   const reduceMotion = useReducedMotion()
   const alternateLocale: Locale = locale === 'es' ? 'en' : 'es'
 
@@ -38,6 +39,53 @@ export function Navigation({ locale }: NavigationProps) {
       window.removeEventListener('keydown', closeOnEscape)
     }
   }, [isOpen])
+
+  useEffect(() => {
+    let animationFrame = 0
+
+    const updateActiveSection = () => {
+      animationFrame = 0
+      const readingLine = Math.min(160, window.innerHeight * 0.28)
+      let currentSection: string | null = null
+
+      for (const item of navigation) {
+        const section = document.getElementById(item.id)
+        if (!section) continue
+
+        const bounds = section.getBoundingClientRect()
+        if (bounds.top <= readingLine && bounds.bottom > readingLine) {
+          currentSection = item.id
+          break
+        }
+      }
+
+      if (
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 4
+      ) {
+        currentSection = 'contact'
+      }
+
+      setActiveSection((current) =>
+        current === currentSection ? current : currentSection,
+      )
+    }
+
+    const scheduleUpdate = () => {
+      if (animationFrame) return
+      animationFrame = window.requestAnimationFrame(updateActiveSection)
+    }
+
+    updateActiveSection()
+    window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('resize', scheduleUpdate)
+
+    return () => {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame)
+      window.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('resize', scheduleUpdate)
+    }
+  }, [])
 
   return (
     <nav aria-label={locale === 'es' ? 'Navegación principal' : 'Main navigation'}>
@@ -69,22 +117,30 @@ export function Navigation({ locale }: NavigationProps) {
           initial={reduceMotion ? false : { opacity: 0, y: -8 }}
           transition={{ duration: 0.2 }}
         >
-          {navigation.map((item, index) => (
-            <motion.a
-              animate={{ opacity: 1, x: 0 }}
-              className="nav-link focus-ring rounded-md px-3 py-2 text-sm text-muted"
-              href={`/${locale}${item.href}`}
-              initial={reduceMotion ? false : { opacity: 0, x: 8 }}
-              key={item.id}
-              onClick={closeMenu}
-              transition={{ delay: isOpen ? index * 0.035 : 0 }}
-            >
-              <span className="nav-link-index">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <span>{item.label[locale]}</span>
-            </motion.a>
-          ))}
+          {navigation.map((item, index) => {
+            const isActive = activeSection === item.id
+
+            return (
+              <motion.a
+                animate={{ opacity: 1, x: 0 }}
+                aria-current={isActive ? 'location' : undefined}
+                className={`nav-link focus-ring rounded-md px-3 py-2 text-sm text-muted ${isActive ? 'is-active' : ''}`}
+                href={`/${locale}${item.href}`}
+                initial={reduceMotion ? false : { opacity: 0, x: 8 }}
+                key={item.id}
+                onClick={() => {
+                  setActiveSection(item.id)
+                  closeMenu()
+                }}
+                transition={{ delay: isOpen ? index * 0.035 : 0 }}
+              >
+                <span className="nav-link-index">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span>{item.label[locale]}</span>
+              </motion.a>
+            )
+          })}
           <a
             aria-label={
               locale === 'es' ? 'Cambiar idioma a inglés' : 'Change language to Spanish'
