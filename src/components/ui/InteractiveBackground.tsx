@@ -13,7 +13,7 @@ export function InteractiveBackground() {
   const pointerY = useMotionValue(-400)
   const x = useSpring(pointerX, { damping: 28, stiffness: 180, mass: 0.35 })
   const y = useSpring(pointerY, { damping: 28, stiffness: 180, mass: 0.35 })
-  const glow = useMotionTemplate`radial-gradient(420px circle at ${x}px ${y}px, rgba(255, 176, 0, 0.105), transparent 72%)`
+  const glow = useMotionTemplate`radial-gradient(420px circle at ${x}px ${y}px, rgba(217, 142, 95, 0.105), transparent 72%)`
 
   useEffect(() => {
     if (reduceMotion) return

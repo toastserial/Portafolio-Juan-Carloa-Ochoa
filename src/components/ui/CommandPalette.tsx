@@ -12,6 +12,7 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { Locale } from '../../types/content'
+import { smoothScrollTo } from '../../lib/smoothScroll'
 
 interface Command {
   id: string
@@ -23,7 +24,7 @@ interface Command {
 
 function scrollToSection(id: string) {
   window.history.pushState({}, '', `${window.location.pathname}#${id}`)
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  smoothScrollTo(`#${id}`)
 }
 
 export function CommandPalette({ locale }: { locale: Locale }) {

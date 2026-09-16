@@ -3,6 +3,7 @@ import { Footer } from './Footer'
 import { Header } from './Header'
 import { InteractiveBackground } from '../ui/InteractiveBackground'
 import { CommandPalette } from '../ui/CommandPalette'
+import { SmoothScroll } from '../ui/SmoothScroll'
 import type { Locale } from '../../types/content'
 
 interface MainLayoutProps {
@@ -13,6 +14,7 @@ interface MainLayoutProps {
 export function MainLayout({ children, locale }: MainLayoutProps) {
   return (
     <div className="min-h-screen bg-canvas text-ink">
+      <SmoothScroll />
       <InteractiveBackground />
       <CommandPalette locale={locale} />
       <a className="skip-link" href="#main-content">

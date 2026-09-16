@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import type { MouseEvent } from 'react'
 import { Navigation } from '../navigation/Navigation'
+import { smoothScrollTo } from '../../lib/smoothScroll'
 import type { Locale } from '../../types/content'
 
 interface HeaderProps {
@@ -11,7 +12,7 @@ export function Header({ locale }: HeaderProps) {
   const returnToTop = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     window.history.pushState({}, '', `/${locale}#top`)
-    window.scrollTo({ behavior: 'smooth', top: 0 })
+    smoothScrollTo(0)
   }
 
   return (
