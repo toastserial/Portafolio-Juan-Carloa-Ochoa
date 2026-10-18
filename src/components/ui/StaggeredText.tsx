@@ -10,7 +10,8 @@ export function StaggeredText({ children, className }: StaggeredTextProps) {
   const words = children.split(' ')
 
   return (
-    <span aria-label={children} className={className}>
+    <span className={className}>
+      <span className="sr-only">{children}</span>
       {words.map((word, index) => (
         <span className="staggered-word-mask" key={`${word}-${index}`}>
           <motion.span

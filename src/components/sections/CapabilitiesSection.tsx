@@ -1,52 +1,137 @@
-import { Code2, Database, DraftingCompass } from 'lucide-react'
-import { Reveal } from '../ui/Reveal'
+import { motion, useReducedMotion } from 'framer-motion'
+import { useState } from 'react'
+import type { PointerEvent } from 'react'
+import { ScrollLyricsText } from '../effects/ScrollLyricsText'
+import { playClick, playHover } from '../../lib/soundEffects'
 import type { Locale } from '../../types/content'
 
-export function CapabilitiesSection({ locale }: { locale: Locale }) {
+interface WhatIDoItem {
+  id: string
+  title: Record<Locale, string>
+  tools: string
+  detail: Record<Locale, string>
+}
+
+const whatIDoItems: WhatIDoItem[] = [
+  {
+    id: 'interfaces',
+    title: { es: 'Interfaces de producto', en: 'Product interfaces' },
+    tools: 'REACT / TYPESCRIPT / NEXT.JS / TAILWIND CSS',
+    detail: {
+      es: 'Construyo flujos responsive que hacen más clara cada tarea.',
+      en: 'I build responsive flows that make each task clearer.',
+    },
+  },
+  {
+    id: 'systems',
+    title: { es: 'Sistemas conectados', en: 'Connected systems' },
+    tools: 'APIS / NODE.JS / PHP / SQL',
+    detail: {
+      es: 'Conecto interfaces con servicios y datos para completar el flujo.',
+      en: 'I connect interfaces to services and data to complete the flow.',
+    },
+  },
+  {
+    id: 'data',
+    title: { es: 'Datos y automatización', en: 'Data & automation' },
+    tools: 'POWER QUERY / PYTHON / EXCEL / DATA PIPELINES',
+    detail: {
+      es: 'Preparo y valido información para que el análisis sea confiable.',
+      en: 'I prepare and validate information so analysis is dependable.',
+    },
+  },
+  {
+    id: 'reporting',
+    title: { es: 'Dashboards operativos', en: 'Operational dashboards' },
+    tools: 'POWER BI / DATA MODELS / OPERATIONAL REPORTING',
+    detail: {
+      es: 'Organizo métricas para que los equipos encuentren lo importante.',
+      en: 'I organize metrics so teams can find what matters.',
+    },
+  },
+  {
+    id: 'motion',
+    title: { es: 'Interacción y 3D', en: 'Interaction & 3D' },
+    tools: 'FRAMER MOTION / THREE.JS / CSS',
+    detail: {
+      es: 'Uso movimiento para orientar, dar feedback y aportar profundidad.',
+      en: 'I use motion to guide, give feedback, and add depth.',
+    },
+  },
+  {
+    id: 'delivery',
+    title: { es: 'Calidad y entrega', en: 'Quality & delivery' },
+    tools: 'FUNCTIONAL TESTING / GIT / BITBUCKET',
+    detail: {
+      es: 'Valido los flujos y colaboro para entregar cambios mantenibles.',
+      en: 'I validate flows and collaborate to ship maintainable changes.',
+    },
+  },
+]
+
+function WhatIDoRow({ item, index, locale, reduceMotion }: {
+  item: WhatIDoItem
+  index: number
+  locale: Locale
+  reduceMotion: boolean | null
+}) {
+  const [pinned, setPinned] = useState(false)
   const es = locale === 'es'
-  const capabilities = [
-    {
-      icon: Code2,
-      number: '01',
-      title: es ? 'Interfaces de producto' : 'Product interfaces',
-      body: es
-        ? 'Sistemas responsive, componentes reutilizables y flujos que priorizan claridad.'
-        : 'Responsive systems, reusable components, and flows that prioritize clarity.',
-    },
-    {
-      icon: Database,
-      number: '02',
-      title: es ? 'Aplicaciones conectadas' : 'Connected applications',
-      body: es
-        ? 'Experiencias frontend integradas con servicios, autenticación y datos.'
-        : 'Frontend experiences integrated with services, authentication, and data.',
-    },
-    {
-      icon: DraftingCompass,
-      number: '03',
-      title: es ? 'Diseño con intención' : 'Intentional design',
-      body: es
-        ? 'Jerarquía, estados y movimiento usados para explicar, no para distraer.'
-        : 'Hierarchy, states, and motion used to explain rather than distract.',
-    },
-  ]
+
+  const handlePointerEnter = (event: PointerEvent<HTMLButtonElement>) => {
+    if (event.pointerType === 'mouse') playHover()
+  }
 
   return (
-    <section className="section-shell" id="capabilities">
-      <Reveal className="section-heading">
-        <p className="technical-label">{es ? '02 / Capacidades' : '02 / Capabilities'}</p>
-        <h2>{es ? 'Del problema a una interfaz útil.' : 'From problem to useful interface.'}</h2>
-      </Reveal>
-      <div className="capability-grid">
-        {capabilities.map(({ body, icon: Icon, number, title }, index) => (
-          <Reveal className="capability-item" delay={index * 0.08} key={number}>
-            <div className="capability-top">
-              <Icon aria-hidden="true" size={22} />
-              <span>{number}</span>
-            </div>
-            <h3>{title}</h3>
-            <p>{body}</p>
-          </Reveal>
+    <motion.button
+      aria-label={`${item.title[locale]}. ${item.tools}. ${item.detail[locale]}. ${es ? 'Fijar resaltado' : 'Pin highlight'}`}
+      aria-pressed={pinned}
+      className={`whatido-row${pinned ? ' is-pinned' : ''}`}
+      initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+      onClick={() => {
+        setPinned((current) => !current)
+        playClick()
+      }}
+      onPointerEnter={handlePointerEnter}
+      transition={reduceMotion ? { duration: 0 } : { duration: 0.6, delay: index * 0.055, ease: [0.22, 1, 0.36, 1] }}
+      type="button"
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+    >
+      <span aria-hidden="true" className="whatido-track">
+        <span className="whatido-layer">
+          <span className="whatido-title">
+            <ScrollLyricsText
+              accentColor="var(--color-accent)"
+              end={0.65}
+              initialColor="#5b5660"
+              start={0.95}
+              text={item.title[locale]}
+            />
+          </span>
+          <span className="whatido-meta">{item.tools}</span>
+        </span>
+        <span className="whatido-layer whatido-layer-active">
+          <span className="whatido-title">{item.title[locale]}</span>
+          <span className="whatido-detail">{item.detail[locale]}</span>
+        </span>
+      </span>
+    </motion.button>
+  )
+}
+
+export function CapabilitiesSection({ locale }: { locale: Locale }) {
+  const reduceMotion = useReducedMotion()
+  const es = locale === 'es'
+
+  return (
+    <section aria-labelledby="whatido-heading" className="section-shell whatido-section" id="capabilities">
+      <h2 className="whatido-heading technical-label" id="whatido-heading">
+        {es ? 'LO QUE HAGO' : 'WHAT I DO'}
+      </h2>
+      <div className="whatido-list">
+        {whatIDoItems.map((item, index) => (
+          <WhatIDoRow item={item} index={index} key={item.id} locale={locale} reduceMotion={reduceMotion} />
         ))}
       </div>
     </section>

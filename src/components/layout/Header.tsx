@@ -1,36 +1,22 @@
-import { ArrowUpRight } from 'lucide-react'
-import type { MouseEvent } from 'react'
 import { Navigation } from '../navigation/Navigation'
-import { smoothScrollTo } from '../../lib/smoothScroll'
+import { playClick } from '../../lib/soundEffects'
 import type { Locale } from '../../types/content'
 
 interface HeaderProps {
   locale: Locale
+  pathname: string
+  onNavigate: (href: string) => void
 }
 
-export function Header({ locale }: HeaderProps) {
-  const returnToTop = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
-    window.history.pushState({}, '', `/${locale}#top`)
-    smoothScrollTo(0)
-  }
-
+export function Header({ locale, pathname, onNavigate }: HeaderProps) {
+  const home = `/${locale}`
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-canvas/90 backdrop-blur">
-      <div className="page-shell flex min-h-16 items-center justify-between gap-6">
-        <a
-          className="brand-lockup focus-ring"
-          href={`/${locale}#top`}
-          onClick={returnToTop}
-        >
-          <img alt="" height="28" src="/icons/brand-mark.png" width="28" />
-          <span>JUAN OCHOA</span>
+    <header className="portfolio-header">
+      <div className="portfolio-header-inner">
+        <a aria-label={locale === 'es' ? 'Juan Ochoa, inicio' : 'Juan Ochoa, home'} className="brand-lockup focus-ring" href={home} onClick={(event) => { event.preventDefault(); playClick(); onNavigate(home) }}>
+          <img alt="" height="34" src="/icons/brand-mark.png" width="34" />
         </a>
-        <Navigation locale={locale} />
-        <a className="header-contact focus-ring" href="#contact">
-          {locale === 'es' ? 'Hablemos' : 'Let’s talk'}
-          <ArrowUpRight aria-hidden="true" size={15} />
-        </a>
+        <Navigation locale={locale} onNavigate={onNavigate} pathname={pathname} />
       </div>
     </header>
   )

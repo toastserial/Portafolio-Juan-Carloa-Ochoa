@@ -1,34 +1,8 @@
 import type { NavigationItem } from '../types/content'
 
 export const navigation: NavigationItem[] = [
-  {
-    id: 'work',
-    label: { es: 'Trabajo', en: 'Work' },
-    href: '#work',
-  },
-  {
-    id: 'capabilities',
-    label: { es: 'Capacidades', en: 'Capabilities' },
-    href: '#capabilities',
-  },
-  {
-    id: 'experience',
-    label: { es: 'Experiencia', en: 'Experience' },
-    href: '#experience',
-  },
-  {
-    id: 'stack',
-    label: { es: 'Stack', en: 'Stack' },
-    href: '#stack',
-  },
-  {
-    id: 'about',
-    label: { es: 'Perfil', en: 'About' },
-    href: '#about',
-  },
-  {
-    id: 'contact',
-    label: { es: 'Contacto', en: 'Contact' },
-    href: '#contact',
-  },
+  { id: 'home', label: { es: 'Inicio', en: 'Home' }, href: '' },
+  { id: 'about', label: { es: 'Perfil', en: 'About' }, href: '/about' },
+  { id: 'projects', label: { es: 'Proyectos', en: 'Projects' }, href: '/projects' },
+  { id: 'contact', label: { es: 'Contacto', en: 'Contact' }, href: '/contact' },
 ]

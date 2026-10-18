@@ -71,5 +71,7 @@ export interface SocialLink {
 export interface NavigationItem {
   id: string
   label: LocalizedText
-  href: `#${string}`
+  href: string
 }
+
+export type PortfolioRoute = 'home' | 'about' | 'projects' | 'project' | 'contact'

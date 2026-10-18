@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { Locale, Project } from '../../types/content'
 import { ProjectTechBadge } from './ProjectTechBadge'
+import { ProjectFlowArtwork } from '../projects/ProjectFlowArtwork'
 
 interface ProjectModalProps {
   locale: Locale
@@ -25,19 +26,9 @@ export function ProjectModal({
   const es = locale === 'es'
   const dialogRef = useRef<HTMLElement>(null)
   const [activeImage, setActiveImage] = useState(0)
-  const processSteps =
-    project?.id === 'multilingual-invoice-automation'
-      ? (es
-          ? ['Recibir formatos', 'Transformar', 'Validar reglas', 'Entregar datos']
-          : ['Receive formats', 'Transform', 'Validate rules', 'Deliver data'])
-      : project?.id === 'radiopharma'
-        ? (es
-            ? ['Documentar flujo', 'Consultar API', 'Persistir datos', 'Operar internamente']
-            : ['Document flow', 'Query API', 'Persist data', 'Operate internally'])
-        : (es
-            ? ['Entender', 'Diseñar', 'Construir', 'Validar']
-            : ['Understand', 'Design', 'Build', 'Validate'])
-
+  const currentImage = project?.id === 'multilingual-invoice-automation'
+    ? undefined
+    : project?.images?.[activeImage] ?? project?.images?.[0]
   useEffect(() => setActiveImage(0), [project?.id])
 
   useEffect(() => {
@@ -95,11 +86,11 @@ export function ProjectModal({
             aria-labelledby="project-modal-title"
             animate={{ opacity: 1, scale: 1, y: 0 }}
             className="project-modal"
-            exit={{ opacity: 0, scale: 0.98, y: 18 }}
-            initial={{ opacity: 0, scale: 0.98, y: 18 }}
+            exit={{ opacity: 0, scale: 0.96, y: 14 }}
+            initial={{ opacity: 0, scale: 0.86, y: 28 }}
             onClick={(event) => event.stopPropagation()}
             ref={dialogRef}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.46, ease: [0.16, 1, 0.3, 1] }}
           >
             <header className="project-modal-header">
               <div>
@@ -117,14 +108,15 @@ export function ProjectModal({
               </button>
             </header>
 
-            {project.images?.length ? (
-              <div className="project-modal-gallery">
+            {currentImage ? (
+              <div className={`project-modal-gallery${project.id === 'radiopharma' ? ' project-modal-gallery--radiopharma' : ''}`}>
                 <img
-                  alt={`${project.title[locale]} · ${activeImage + 1}`}
-                  key={project.images[activeImage]}
-                  src={project.images[activeImage]}
+                  alt={`${project.title[locale]} · ${Math.min(activeImage + 1, project.images!.length)}`}
+                  key={currentImage}
+                  src={currentImage}
                 />
-                {project.images.length > 1 && (
+                {project.id === 'radiopharma' && <div aria-hidden="true" className="project-image-safety-mask" />}
+                {(project.images?.length ?? 0) > 1 && (
                   <div className="project-gallery-controls">
                     <button
                       aria-label={es ? 'Imagen anterior' : 'Previous image'}
@@ -140,7 +132,7 @@ export function ProjectModal({
                       <ArrowLeft aria-hidden="true" size={16} />
                     </button>
                     <span>
-                      {activeImage + 1} / {project.images.length}
+                      {activeImage + 1} / {project.images!.length}
                     </span>
                     <button
                       aria-label={es ? 'Imagen siguiente' : 'Next image'}
@@ -158,8 +150,11 @@ export function ProjectModal({
                 )}
               </div>
             ) : (
-              <div className="project-modal-placeholder" aria-hidden="true">
-                <span>{project.title[locale]}</span>
+              <div className={`project-modal-placeholder${project.id === 'multilingual-invoice-automation' ? ' project-modal-placeholder--flow' : ''}`}>
+                {project.id === 'multilingual-invoice-automation' && <ProjectFlowArtwork locale={locale} />}
+                <span>{es ? 'CASO / SIN CAPTURA' : 'CASE / NO SCREENSHOT'}</span>
+                <strong>{project.title[locale]}</strong>
+                <p>{es ? 'Vista conceptual del proyecto; no hay una captura pública disponible.' : 'Conceptual project view; no public screenshot is available.'}</p>
               </div>
             )}
 
@@ -195,20 +190,6 @@ export function ProjectModal({
                     <p>{project.learning[locale]}</p>
                   </div>
                 )}
-              </div>
-              <div className="case-study-flow">
-                <div className="case-study-flow-heading">
-                  <span>{es ? 'Proceso guiado' : 'Guided process'}</span>
-                  <strong>{es ? 'Del problema al resultado' : 'From problem to outcome'}</strong>
-                </div>
-                <ol>
-                  {processSteps.map((step, index) => (
-                    <li key={step}>
-                      <span>{String(index + 1).padStart(2, '0')}</span>
-                      <strong>{step}</strong>
-                    </li>
-                  ))}
-                </ol>
               </div>
               <div className="project-modal-stack">
                 {project.stack.map((item) => (

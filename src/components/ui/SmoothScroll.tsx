@@ -1,7 +1,7 @@
 import Lenis from 'lenis'
 import { useEffect } from 'react'
 import 'lenis/dist/lenis.css'
-import { setActiveLenis } from '../../lib/smoothScroll'
+import { interceptScrollBoundary, setActiveLenis } from '../../lib/smoothScroll'
 
 export function SmoothScroll() {
   useEffect(() => {
@@ -19,6 +19,11 @@ export function SmoothScroll() {
       smoothWheel: true,
       stopInertiaOnNavigate: true,
       syncTouch: false,
+      virtualScroll: ({ deltaY, event }) => {
+        if (event.type !== 'wheel' || !interceptScrollBoundary(deltaY)) return true
+        if (event.cancelable) event.preventDefault()
+        return false
+      },
       wheelMultiplier: 0.9,
     })
 

@@ -1,7 +1,4 @@
 # Modelos 3D
 
-Directorio reservado para recursos 3D optimizados.
-
-El archivo `funkopop.glb` todavía no se carga ni se importa. Su integración se
-realizará en una fase posterior.
+Este directorio conserva el modelo `funkopop.glb` que ya pertenecía al proyecto. El Hero utiliza el retrato de Juan y no descarga modelos 3D.
 

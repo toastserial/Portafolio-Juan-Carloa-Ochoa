@@ -1,170 +1,144 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
+import type { KeyboardEvent } from 'react'
 import { technologies } from '../../data/technologies'
 import { Reveal } from '../ui/Reveal'
-import { TechOrbit } from '../ui/TechOrbit'
+import { TechnologyMotion } from './TechnologyMotion'
 import type { Locale, TechnologyCategory } from '../../types/content'
 
 export function ExperienceSection({ locale }: { locale: Locale }) {
   const es = locale === 'es'
   const reduceMotion = useReducedMotion()
-  const groups: Array<{
-    id: TechnologyCategory
-    label: string
-    description: string
-  }> = [
-    {
-      id: 'frontend',
-      label: 'Frontend',
-      description: es ? 'Lo que la persona ve y utiliza.' : 'What people see and use.',
-    },
-    {
-      id: 'backend',
-      label: 'Backend',
-      description: es ? 'La lógica que sostiene el producto.' : 'The logic behind the product.',
-    },
-    {
-      id: 'data',
-      label: es ? 'Datos' : 'Data',
-      description: es ? 'La información que conecta decisiones.' : 'Information that connects decisions.',
-    },
-    {
-      id: 'tools',
-      label: es ? 'Herramientas' : 'Tools',
-      description: es ? 'El sistema que permite entregar.' : 'The system that enables delivery.',
-    },
+  const groups: Array<{ id: TechnologyCategory; label: string }> = [
+    { id: 'frontend', label: 'Frontend' },
+    { id: 'backend', label: 'Backend' },
+    { id: 'data', label: es ? 'Datos' : 'Data' },
+    { id: 'tools', label: es ? 'Herramientas' : 'Tools' },
   ]
   const [activeGroup, setActiveGroup] = useState<TechnologyCategory>('frontend')
-  const active = groups.find((group) => group.id === activeGroup) ?? groups[0]
-  const visibleTechnologies = technologies.filter(
-    (technology) => technology.category === activeGroup,
-  )
+  const [activeTechnology, setActiveTechnology] = useState('react')
+  const [motionKey, setMotionKey] = useState(0)
+  const visibleTechnologies = technologies.filter((item) => item.category === activeGroup)
+  const selectedTechnology = visibleTechnologies.find((item) => item.id === activeTechnology)?.id ?? visibleTechnologies[0].id
+  const headingCopy: Record<TechnologyCategory, string> = es
+    ? { frontend: 'Interfaces claras.', backend: 'Sistemas confiables.', data: 'Datos con contexto.', tools: 'Trabajo bien hecho.' }
+    : { frontend: 'Clear interfaces.', backend: 'Reliable systems.', data: 'Data with context.', tools: 'Work that ships.' }
+
+  const selectGroup = (category: TechnologyCategory) => {
+    setActiveGroup(category)
+    setActiveTechnology(technologies.find((item) => item.category === category)?.id ?? '')
+  }
+
+  const onTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let next = index
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % groups.length
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + groups.length) % groups.length
+    else if (event.key === 'Home') next = 0
+    else if (event.key === 'End') next = groups.length - 1
+    else return
+    event.preventDefault()
+    selectGroup(groups[next].id)
+    document.getElementById(`stack-tab-${groups[next].id}`)?.focus()
+  }
 
   return (
-    <section className="section-shell" id="stack">
-      <Reveal className="section-heading">
-        <p className="technical-label">{es ? '04 / Herramientas' : '04 / Toolkit'}</p>
-        <h2>{es ? 'Tecnología según su función.' : 'Technology by function.'}</h2>
-        <p>
-          {es
-            ? 'Sin porcentajes arbitrarios: cada herramienta aparece por la forma en que contribuye al trabajo.'
-            : 'No arbitrary percentages: every tool is shown through the role it plays in the work.'}
-        </p>
+    <section className="section-shell stack-section" id="stack">
+      <Reveal className="section-heading stack-heading">
+        <p className="technical-label">{es ? 'HERRAMIENTAS · ELIGE UNA CATEGORÍA' : 'TOOLKIT · CHOOSE A CATEGORY'}</p>
+        <h2 aria-atomic="true" aria-live="polite" className="stack-heading-copy">
+          <span className="stack-heading-lead">{es ? 'Software con' : 'Software with'}</span>
+          <span className="stack-heading-window">
+            <AnimatePresence initial={false} mode="wait">
+              <motion.span
+                animate={{ opacity: 1, y: 0 }}
+                className="stack-heading-value"
+                exit={reduceMotion ? undefined : { opacity: 0, y: '-55%' }}
+                initial={reduceMotion ? false : { opacity: 0, y: '55%' }}
+                key={activeGroup}
+                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {headingCopy[activeGroup]}
+              </motion.span>
+            </AnimatePresence>
+          </span>
+          <span aria-hidden="true" className="stack-heading-track">
+            {groups.map((group) => <span className={activeGroup === group.id ? 'is-active' : ''} key={group.id} />)}
+          </span>
+        </h2>
       </Reveal>
-      <Reveal className="tech-orbit-card">
-        <div className="tech-orbit-copy">
-          <p className="technical-label">
-            {es ? 'Stack conectado' : 'Connected stack'}
-          </p>
-          <h3>
-            {es
-              ? 'Dos disciplinas, un mismo flujo.'
-              : 'Two disciplines, one connected flow.'}
-          </h3>
-          <p>
-            {es
-              ? 'Preparo y entiendo los datos; después construyo las interfaces y sistemas que permiten utilizarlos.'
-              : 'I prepare and understand data, then build the interfaces and systems that make it useful.'}
-          </p>
-        </div>
-        <TechOrbit locale={locale} />
-      </Reveal>
-      <Reveal className="stack-system">
+
+      <Reveal className="stack-editorial">
         <div
           aria-label={es ? 'Categorías tecnológicas' : 'Technology categories'}
-          className="stack-tabs"
+          className="stack-category-rail"
           role="tablist"
         >
           {groups.map((group, index) => (
             <button
               aria-controls="stack-panel"
               aria-selected={activeGroup === group.id}
-              className="stack-tab"
+              className="stack-category"
               id={`stack-tab-${group.id}`}
               key={group.id}
-              onClick={() => setActiveGroup(group.id)}
+              onClick={() => selectGroup(group.id)}
+              onKeyDown={(event) => onTabKeyDown(event, index)}
               role="tab"
+              tabIndex={activeGroup === group.id ? 0 : -1}
               type="button"
             >
-              <span>0{index + 1}</span>
-              {group.label}
-              {activeGroup === group.id && (
-                <motion.span
-                  className="stack-tab-indicator"
-                  layoutId="stack-active"
-                  transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                />
-              )}
+              <span>{group.label}</span>
             </button>
           ))}
         </div>
 
         <div
           aria-labelledby={`stack-tab-${activeGroup}`}
-          className="stack-panel"
+          className="stack-editorial-panel"
           id="stack-panel"
           role="tabpanel"
           tabIndex={0}
         >
-          <div className="stack-panel-heading">
-            <div className="stack-pulse" />
-            <div>
-              <p className="technical-label">{active.label}</p>
-              <p>{active.description}</p>
-            </div>
+          <div className="stack-editorial-meta">
+            <span>{groups.find((group) => group.id === activeGroup)?.label}</span>
+            <span>{es ? 'SELECCIONA UNA TECNOLOGÍA' : 'SELECT A TECHNOLOGY'}</span>
           </div>
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              animate="show"
-              className="stack-cards"
+              animate={{ opacity: 1, y: 0 }}
+              className="stack-technology-list"
               exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
-              initial={reduceMotion ? false : 'hidden'}
+              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
               key={activeGroup}
-              variants={{
-                hidden: {},
-                show: {
-                  transition: { staggerChildren: 0.08 },
-                },
-              }}
+              transition={{ duration: 0.24, ease: 'easeOut' }}
             >
-              {visibleTechnologies.map((technology, index) => (
-                <motion.article
-                  className="stack-card"
-                  key={technology.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 14 },
-                    show: { opacity: 1, y: 0 },
-                  }}
-                >
-                  <span className="stack-card-index">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <strong>{technology.name}</strong>
-                  <p>{technology.usage[locale]}</p>
-                  <div className="stack-signal">
-                    <motion.span
-                      animate={reduceMotion ? undefined : { x: ['-100%', '320%'] }}
-                      transition={{
-                        duration: 2.8,
-                        ease: 'linear',
-                        repeat: Infinity,
-                        repeatDelay: 1.2 + index * 0.4,
+              {visibleTechnologies.map((technology) => {
+                const active = technology.id === selectedTechnology
+                return (
+                  <div className={`stack-technology${active ? ' is-active' : ''}`} key={technology.id}>
+                    <button
+                      aria-expanded={active}
+                      className="stack-technology-button"
+                      onClick={() => {
+                        setActiveTechnology(technology.id)
+                        setMotionKey((value) => value + 1)
                       }}
-                    />
+                      onFocus={() => setActiveTechnology(technology.id)}
+                      type="button"
+                    >
+                      <span>{technology.name}</span>
+                      <ArrowUpRight aria-hidden="true" size={24} strokeWidth={1.5} />
+                    </button>
+                    <div aria-hidden={!active} className="stack-technology-detail">
+                      <p>{technology.usage[locale]}</p>
+                      {active && <TechnologyMotion category={technology.category} id={technology.id} key={`${technology.id}-${motionKey}`} />}
+                    </div>
                   </div>
-                </motion.article>
-              ))}
+                )
+              })}
             </motion.div>
           </AnimatePresence>
         </div>
-      </Reveal>
-      <Reveal className="honesty-note">
-        <span>{es ? 'Conexión' : 'Connection'}</span>
-        <p>
-          {es
-            ? 'Este stack conecta mi experiencia preparando datos con mi trabajo actual desarrollando soluciones de software.'
-            : 'This toolkit connects my data preparation experience with my current work building software solutions.'}
-        </p>
       </Reveal>
     </section>
   )
