@@ -18,7 +18,7 @@ export function PhilosophySection({ locale }: { locale: Locale }) {
 
       <SmudgeReveal
         className="philosophy-composition"
-        label={es ? 'Mueve el cursor para revelar otra pregunta' : 'Move the pointer to reveal another question'}
+        label={es ? 'Toca y arrastra para revelar otra pregunta' : 'Touch and drag to reveal another question'}
         revealed={
           <div className="philosophy-grid philosophy-grid-ink">
             <div aria-hidden="true" className="philosophy-model-frame">
@@ -57,6 +57,7 @@ export function PhilosophySection({ locale }: { locale: Locale }) {
           </div>
         </div>
       </SmudgeReveal>
+      <p className="philosophy-touch-hint">{es ? 'DESLIZA EL DEDO PARA REVELAR Y GIRAR EL BUSTO' : 'DRAG TO REVEAL AND TURN THE BUST'}</p>
     </section>
   )
 }

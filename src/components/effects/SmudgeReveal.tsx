@@ -74,16 +74,16 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
     animationFrame.current = window.requestAnimationFrame(tick)
   }
 
-  const addStamp = (x: number, y: number) => {
+  const addStamp = (x: number, y: number, radius = 38) => {
     const group = groupRef.current
     if (!group) return
     const circle = document.createElementNS(svgNamespace, 'circle')
     circle.setAttribute('cx', String(x))
     circle.setAttribute('cy', String(y))
-    circle.setAttribute('r', '38')
+    circle.setAttribute('r', String(radius))
     circle.setAttribute('fill', 'white')
     group.appendChild(circle)
-    active.current.push({ circle, radius: 38, start: 0, delay: 0 })
+    active.current.push({ circle, radius, start: 0, delay: 0 })
 
   }
 
@@ -95,6 +95,7 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
     if (!bounds) return
     const pad = getPadding()
     const point = { x: event.clientX - bounds.left + pad, y: event.clientY - bounds.top + pad }
+    const radius = event.pointerType === 'touch' ? 58 : 38
     const previous = lastPoint.current
     if (previous) {
       const dx = point.x - previous.x
@@ -103,10 +104,10 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
       const count = Math.floor(Math.hypot(dx, dy) / 12)
       for (let index = 1; index <= count; index += 1) {
         const fraction = index / (count + 1)
-        addStamp(previous.x + dx * fraction, previous.y + dy * fraction)
+        addStamp(previous.x + dx * fraction, previous.y + dy * fraction, radius)
       }
     }
-    addStamp(point.x, point.y)
+    addStamp(point.x, point.y, radius)
     lastPoint.current = point
   }
 

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { KeyboardEvent, MouseEvent } from 'react'
+import type { CSSProperties, KeyboardEvent, MouseEvent } from 'react'
 import type Lenis from 'lenis'
 import type { Locale, Project } from '../../types/content'
 import type { MotionValue } from 'framer-motion'
@@ -247,7 +247,10 @@ export function ProjectExplorer({ locale, onNavigate, projects }: ProjectExplore
       aria-label={es ? 'Proyectos de Juan Carlos Ochoa' : 'Juan Carlos Ochoa projects'}
       className="project-scroll-track"
       ref={sectionRef}
-      style={{ height: `${Math.max(slides.length, 1) * 100}svh` }}
+      style={{
+        '--project-mobile-track-height': `${Math.max(slides.length, 1) * 90}svh`,
+        '--project-track-height': `${Math.max(slides.length, 1) * 100}svh`,
+      } as CSSProperties}
     >
       <div className="project-scene" onKeyDown={handleKeyDown} ref={sceneRef} role="region" tabIndex={0}>
         {slides.map((slide, index) => {

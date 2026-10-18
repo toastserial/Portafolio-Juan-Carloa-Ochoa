@@ -1,10 +1,11 @@
-import { Mail } from 'lucide-react'
+import { ArrowDown, Mail } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa'
 import { useRef } from 'react'
-import type { PointerEvent } from 'react'
+import type { MouseEvent, PointerEvent } from 'react'
 import { socialLinks } from '../../data/socialLinks'
 import { playClick, playHover } from '../../lib/soundEffects'
+import { smoothScrollTo } from '../../lib/smoothScroll'
 import { IdentityParticles } from '../effects/IdentityParticles'
 import type { Locale } from '../../types/content'
 
@@ -21,6 +22,12 @@ export function HeroSection({ locale }: { locale: Locale }) {
     const y = (event.clientY - bounds.top) / bounds.height - 0.5
     heroRef.current.style.setProperty('--hero-shift-x', `${x * -10}px`)
     heroRef.current.style.setProperty('--hero-shift-y', `${y * -8}px`)
+  }
+  const scrollToSection = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+    event.preventDefault()
+    playClick()
+    const target = document.getElementById(id)
+    if (target) smoothScrollTo(target, reduceMotion === true)
   }
   const entrance = (delay: number) => ({
     initial: reduceMotion ? false : { opacity: 0, y: 16 },
@@ -43,6 +50,17 @@ export function HeroSection({ locale }: { locale: Locale }) {
           <motion.div className="hero-stage-type" {...entrance(0.26)}>
             <IdentityParticles locale={locale} />
           </motion.div>
+          <p className="hero-touch-hint">{es ? 'TOCA Y ARRASTRA PARA INTERACTUAR' : 'TOUCH AND DRAG TO INTERACT'}</p>
+          <nav aria-label={es ? 'Explorar el portafolio' : 'Explore the portfolio'} className="hero-mobile-actions">
+            <a className="hero-mobile-action" href="#work" onClick={(event) => scrollToSection(event, 'work')} onMouseEnter={playHover}>
+              {es ? 'Ver proyectos' : 'Explore projects'}
+              <ArrowDown aria-hidden="true" size={15} />
+            </a>
+            <a className="hero-mobile-action hero-mobile-action-secondary" href="#about-portrait" onClick={(event) => scrollToSection(event, 'about-portrait')} onMouseEnter={playHover}>
+              {es ? 'Conóceme' : 'About me'}
+              <ArrowDown aria-hidden="true" size={15} />
+            </a>
+          </nav>
         </div>
 
         <motion.nav aria-label={es ? 'Redes sociales' : 'Social links'} className="hero-socials" {...entrance(0.4)}>

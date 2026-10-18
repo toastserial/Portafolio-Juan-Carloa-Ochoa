@@ -40,6 +40,7 @@ function Bust({ containerRef, showGoggles }: { containerRef: RefObject<HTMLEleme
   const mouseOffset = useRef({ x: 0, y: 0 })
   const targetOffset = useRef({ x: 0, y: 0 })
   const scrollOffset = useRef(0)
+  const activeTouchPointer = useRef<number | null>(null)
   const invalidate = useThree((state) => state.invalidate)
 
   useEffect(() => {
@@ -56,13 +57,27 @@ function Bust({ containerRef, showGoggles }: { containerRef: RefObject<HTMLEleme
       invalidate()
     }
 
-    const handleMove = (event: PointerEvent) => {
-      if (event.pointerType !== 'mouse') return
+    const updatePointer = (event: PointerEvent) => {
       const rect = element.getBoundingClientRect()
       targetOffset.current = {
         y: 0.35 * ((event.clientX - rect.left) / rect.width - 0.5),
         x: 0.25 * ((event.clientY - rect.top) / rect.height - 0.5),
       }
+      invalidate()
+    }
+    const handleDown = (event: PointerEvent) => {
+      if (event.pointerType !== 'touch') return
+      activeTouchPointer.current = event.pointerId
+      updatePointer(event)
+    }
+    const handleMove = (event: PointerEvent) => {
+      if (event.pointerType === 'touch' && activeTouchPointer.current !== event.pointerId) return
+      updatePointer(event)
+    }
+    const handleUp = (event: PointerEvent) => {
+      if (event.pointerType !== 'touch' || activeTouchPointer.current !== event.pointerId) return
+      activeTouchPointer.current = null
+      targetOffset.current = { x: 0, y: 0 }
       invalidate()
     }
     const handleLeave = () => {
@@ -71,12 +86,18 @@ function Bust({ containerRef, showGoggles }: { containerRef: RefObject<HTMLEleme
     }
 
     updateScroll()
+    element.addEventListener('pointerdown', handleDown)
     element.addEventListener('pointermove', handleMove)
+    element.addEventListener('pointerup', handleUp)
+    element.addEventListener('pointercancel', handleUp)
     element.addEventListener('pointerleave', handleLeave)
     window.addEventListener('scroll', updateScroll, { passive: true })
     window.addEventListener('resize', updateScroll)
     return () => {
+      element.removeEventListener('pointerdown', handleDown)
       element.removeEventListener('pointermove', handleMove)
+      element.removeEventListener('pointerup', handleUp)
+      element.removeEventListener('pointercancel', handleUp)
       element.removeEventListener('pointerleave', handleLeave)
       window.removeEventListener('scroll', updateScroll)
       window.removeEventListener('resize', updateScroll)

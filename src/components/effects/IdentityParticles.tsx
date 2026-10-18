@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { PointerEvent as ReactPointerEvent } from 'react'
 import type { Locale } from '../../types/content'
 
 const vertexSource = `
@@ -45,7 +46,29 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
   const identityLines = identityLinesByLocale[locale]
   const stageRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const activeTouchPointer = useRef<number | null>(null)
   const [ready, setReady] = useState(false)
+
+  const updateTouchFallback = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (event.pointerType !== 'touch') return
+    const stage = stageRef.current
+    if (!stage) return
+    const bounds = stage.getBoundingClientRect()
+    const x = Math.max(-18, Math.min(18, (event.clientX - bounds.left - bounds.width / 2) * 0.045))
+    const y = Math.max(-14, Math.min(14, (event.clientY - bounds.top - bounds.height / 2) * 0.045))
+    stage.style.setProperty('--identity-touch-x', `${x}px`)
+    stage.style.setProperty('--identity-touch-y', `${y}px`)
+    stage.dataset.touchActive = 'true'
+  }
+
+  const resetTouchFallback = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (event.pointerType !== 'touch') return
+    activeTouchPointer.current = null
+    const stage = stageRef.current
+    stage?.style.setProperty('--identity-touch-x', '0px')
+    stage?.style.setProperty('--identity-touch-y', '0px')
+    if (stage) stage.dataset.touchActive = 'false'
+  }
 
   useEffect(() => {
     const stage = stageRef.current
@@ -197,7 +220,8 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
       const width = Math.round(stage.clientWidth)
       const height = Math.round(stage.clientHeight)
       if (width < 1 || height < 1) return
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+      const isSmallScreen = window.innerWidth < 768
+      const dpr = Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.1 : 1.5)
       canvas.width = Math.round(width * dpr)
       canvas.height = Math.round(height * dpr)
       const mask = document.createElement('canvas')
@@ -214,8 +238,8 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
       context.textBaseline = 'middle'
       identityLines.forEach((line, index) => context.fillText(line, width / 2, height * (0.24 + index * 0.26), width * 0.96))
       const pixels = context.getImageData(0, 0, width, height).data
-      const target = width < 500 ? 18000 : 75000
-      const minimumStride = width < 500 ? 1.7 : 1.5
+      const target = width < 500 ? 8500 : 75000
+      const minimumStride = width < 500 ? 2 : 1.5
       const stride = Math.max(minimumStride, Math.sqrt(width * height * 0.35 / target))
       pointSize = 3.5
       const points: number[] = []
@@ -254,20 +278,39 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
       else if (frame) { cancelAnimationFrame(frame); frame = 0 }
     }, { threshold: 0.05 })
     visibilityObserver.observe(stage)
-    const onPointerMove = (event: PointerEvent) => {
-      if (event.pointerType === 'touch') return
+    const movePointer = (event: globalThis.PointerEvent) => {
       const rect = stage.getBoundingClientRect()
       pointer.x = event.clientX - rect.left
       pointer.y = event.clientY - rect.top
       wake()
     }
-    const onPointerLeave = () => { pointer.x = -10000; pointer.y = -10000; wake() }
+    const onPointerDown = (event: globalThis.PointerEvent) => {
+      if (event.pointerType !== 'touch') return
+      activeTouchPointer.current = event.pointerId
+      movePointer(event)
+    }
+    const onPointerMove = (event: globalThis.PointerEvent) => {
+      if (event.pointerType === 'touch' && activeTouchPointer.current !== event.pointerId) return
+      movePointer(event)
+    }
+    const onPointerUp = (event: globalThis.PointerEvent) => {
+      if (event.pointerType === 'touch' && activeTouchPointer.current === event.pointerId) activeTouchPointer.current = null
+    }
+    const onPointerLeave = (event: globalThis.PointerEvent) => {
+      if (event.pointerType === 'touch') return
+      pointer.x = -10000
+      pointer.y = -10000
+      wake()
+    }
     const onVisibility = () => {
       if (document.hidden && frame) { cancelAnimationFrame(frame); frame = 0 }
       else if (framesLeft > 0) wake()
     }
     const onContextLost = (event: Event) => { event.preventDefault(); contextLost = true; setReady(false); if (frame) cancelAnimationFrame(frame); frame = 0 }
+    stage.addEventListener('pointerdown', onPointerDown)
     stage.addEventListener('pointermove', onPointerMove)
+    stage.addEventListener('pointerup', onPointerUp)
+    stage.addEventListener('pointercancel', onPointerUp)
     stage.addEventListener('pointerleave', onPointerLeave)
     document.addEventListener('visibilitychange', onVisibility)
     canvas.addEventListener('webglcontextlost', onContextLost)
@@ -278,7 +321,10 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
       if (frame) cancelAnimationFrame(frame)
       resizeObserver.disconnect()
       visibilityObserver.disconnect()
+      stage.removeEventListener('pointerdown', onPointerDown)
       stage.removeEventListener('pointermove', onPointerMove)
+      stage.removeEventListener('pointerup', onPointerUp)
+      stage.removeEventListener('pointercancel', onPointerUp)
       stage.removeEventListener('pointerleave', onPointerLeave)
       document.removeEventListener('visibilitychange', onVisibility)
       canvas.removeEventListener('webglcontextlost', onContextLost)
@@ -293,7 +339,14 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
   return (
     <div aria-label={locale === 'es' ? 'Tipografía interactiva: creando software útil' : 'Interactive typography: building useful software'} className={`identity-artwork${ready ? ' is-ready' : ''}`} ref={stageRef} role="img">
       <span aria-hidden="true" className="identity-static">{identityLines.map((line) => <span key={line}>{line}</span>)}</span>
-      <canvas aria-hidden="true" ref={canvasRef} />
+      <canvas
+        aria-hidden="true"
+        onPointerCancel={resetTouchFallback}
+        onPointerDown={(event) => { if (event.pointerType === 'touch') activeTouchPointer.current = event.pointerId; updateTouchFallback(event) }}
+        onPointerMove={updateTouchFallback}
+        onPointerUp={resetTouchFallback}
+        ref={canvasRef}
+      />
     </div>
   )
 }
