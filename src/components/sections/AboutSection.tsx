@@ -1,9 +1,11 @@
 import { useReducedMotion } from 'framer-motion'
+import { ArrowDown } from 'lucide-react'
 import { useEffect, useId, useRef } from 'react'
 import { HeroVideoBackground } from '../ui/HeroVideoBackground'
 import { SmudgeReveal } from '../effects/SmudgeReveal'
 import { ScrollLyricsText } from '../effects/ScrollLyricsText'
 import { Reveal } from '../ui/Reveal'
+import { playClick, playHover } from '../../lib/soundEffects'
 import type { Locale } from '../../types/content'
 
 export function AboutSection({ locale }: { locale: Locale }) {
@@ -57,6 +59,10 @@ export function AboutSection({ locale }: { locale: Locale }) {
         style={{ clipPath: `url(#${clipId})` }}
       >
         <HeroVideoBackground />
+        <a className="about-mobile-cue" href="#about" onClick={playClick} onMouseEnter={playHover}>
+          <span>{es ? 'DESLIZA PARA CONOCERME' : 'SCROLL TO MEET ME'}</span>
+          <ArrowDown aria-hidden="true" size={15} />
+        </a>
       </section>
 
       <section className="section-shell about-page" id="about">

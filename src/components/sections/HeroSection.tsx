@@ -50,7 +50,7 @@ export function HeroSection({ locale }: { locale: Locale }) {
           <motion.div className="hero-stage-type" {...entrance(0.26)}>
             <IdentityParticles locale={locale} />
           </motion.div>
-          <p className="hero-touch-hint">{es ? 'TOCA Y ARRASTRA PARA INTERACTUAR' : 'TOUCH AND DRAG TO INTERACT'}</p>
+          <p className="hero-touch-hint">{es ? 'DESLIZA DE LADO A LADO PARA INTERACTUAR' : 'DRAG SIDE TO SIDE TO INTERACT'}</p>
           <nav aria-label={es ? 'Explorar el portafolio' : 'Explore the portfolio'} className="hero-mobile-actions">
             <a className="hero-mobile-action" href="#work" onClick={(event) => scrollToSection(event, 'work')} onMouseEnter={playHover}>
               {es ? 'Ver proyectos' : 'Explore projects'}

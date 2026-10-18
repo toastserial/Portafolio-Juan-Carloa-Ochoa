@@ -248,7 +248,7 @@ export function ProjectExplorer({ locale, onNavigate, projects }: ProjectExplore
       className="project-scroll-track"
       ref={sectionRef}
       style={{
-        '--project-mobile-track-height': `${Math.max(slides.length, 1) * 90}svh`,
+        '--project-mobile-track-height': `${Math.max(slides.length, 1) * 100}svh`,
         '--project-track-height': `${Math.max(slides.length, 1) * 100}svh`,
       } as CSSProperties}
     >

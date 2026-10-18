@@ -57,7 +57,7 @@ export function PhilosophySection({ locale }: { locale: Locale }) {
           </div>
         </div>
       </SmudgeReveal>
-      <p className="philosophy-touch-hint">{es ? 'DESLIZA EL DEDO PARA REVELAR Y GIRAR EL BUSTO' : 'DRAG TO REVEAL AND TURN THE BUST'}</p>
+      <p className="philosophy-touch-hint">{es ? 'DESLIZA SOBRE LO MORADO; LUEGO ARRASTRA EL BUSTO' : 'SWIPE THE PURPLE AREA, THEN DRAG THE BUST'}</p>
     </section>
   )
 }
