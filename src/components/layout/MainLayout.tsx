@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { Footer } from './Footer'
 import { Header } from './Header'
 import { InteractiveBackground } from '../ui/InteractiveBackground'
 import { SmoothScroll } from '../ui/SmoothScroll'
@@ -26,7 +25,6 @@ export function MainLayout({ children, locale, pathname, onNavigate }: MainLayou
       </a>
       <Header locale={locale} onNavigate={onNavigate} pathname={pathname} />
       <main className={isHome ? 'main-home' : isProjects ? 'main-projects' : isContact ? 'main-contact' : undefined} id="main-content">{children}</main>
-      {!isHome && !isProjects && !isContact && <Footer locale={locale} onNavigate={onNavigate} />}
     </div>
   )
 }

@@ -31,7 +31,7 @@ export function PhilosophySection({ locale }: { locale: Locale }) {
               </Suspense>
             </div>
             <div className="philosophy-quote">
-              <h2>{es ? '“¿QUÉ ESTAMOS DANDO POR HECHO?”' : '“WHAT ARE WE TAKING FOR GRANTED?”'}</h2>
+              <h2>{es ? '“MARCO AURELIO NO APROBÓ EL DEPLOY DEL VIERNES.”' : '“MARCUS AURELIUS DID NOT APPROVE THE FRIDAY DEPLOY.”'}</h2>
             </div>
           </div>
         }
@@ -57,7 +57,6 @@ export function PhilosophySection({ locale }: { locale: Locale }) {
           </div>
         </div>
       </SmudgeReveal>
-      <p className="philosophy-touch-hint">{es ? 'DESLIZA SOBRE LO MORADO; LUEGO ARRASTRA EL BUSTO' : 'SWIPE THE PURPLE AREA, THEN DRAG THE BUST'}</p>
     </section>
   )
 }

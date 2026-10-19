@@ -66,13 +66,29 @@ export function Navigation({ locale, pathname, onNavigate }: NavigationProps) {
       </button>
       <AnimatePresence>
         {isOpen && (
-          <motion.div animate={{ clipPath: 'inset(0% 0% 0% 0%)' }} className="nav-mobile-panel" exit={reduceMotion ? undefined : { clipPath: 'inset(0% 0% 100% 0%)' }} id="mobile-navigation" initial={reduceMotion ? false : { clipPath: 'inset(0% 0% 100% 0%)' }} transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.76, 0, 0.24, 1] }}>
+          <motion.div animate={{ clipPath: 'circle(150% at calc(100% - 2rem) 2rem)' }} className="nav-mobile-panel" exit={reduceMotion ? undefined : { clipPath: 'circle(0% at calc(100% - 2rem) 2rem)' }} id="mobile-navigation" initial={reduceMotion ? false : { clipPath: 'circle(0% at calc(100% - 2rem) 2rem)' }} transition={{ duration: reduceMotion ? 0 : 0.72, ease: [0.76, 0, 0.24, 1] }}>
             {navigation.map((item, index) => {
               const href = `/${locale}${item.href}`
               const active = pathname === href || (item.id === 'projects' && pathname.startsWith(`${href}/`)) || (item.id === 'home' && pathname === `/${locale}/`)
+              const label = item.label[locale]
               return (
-                <motion.a aria-current={active ? 'page' : undefined} animate={{ opacity: 1, x: 0 }} className={`nav-mobile-link${active ? ' is-active' : ''}`} href={href} initial={reduceMotion ? false : { opacity: 0, x: 36 }} key={item.id} onClick={(event) => handleClick(event, href)} transition={{ delay: reduceMotion ? 0 : 0.08 + index * 0.07 }}>
-                  <span className="nav-roll"><span>{item.label[locale]}</span><span aria-hidden="true">{item.label[locale]}</span></span>
+                <motion.a aria-current={active ? 'page' : undefined} aria-label={label} animate={{ opacity: 1 }} className={`nav-mobile-link${active ? ' is-active' : ''}`} href={href} initial={reduceMotion ? false : { opacity: 0 }} key={item.id} onClick={(event) => handleClick(event, href)} transition={{ delay: reduceMotion ? 0 : 0.06 + index * 0.07 }}>
+                  <span aria-hidden="true" className="nav-roll">
+                    <span className="nav-mobile-word">
+                      {[...label].map((character, characterIndex) => (
+                        <motion.span
+                          animate={{ y: '0%' }}
+                          className="nav-mobile-letter"
+                          initial={reduceMotion ? false : { y: '115%' }}
+                          key={`${item.id}-${characterIndex}`}
+                          transition={{ delay: reduceMotion ? 0 : 0.13 + index * 0.075 + characterIndex * 0.025, duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          {character === ' ' ? '\u00a0' : character}
+                        </motion.span>
+                      ))}
+                    </span>
+                    <span className="nav-mobile-word">{label}</span>
+                  </span>
                 </motion.a>
               )
             })}

@@ -130,7 +130,7 @@ export function WorkExperienceSection({
         <SmudgeReveal
           className="about-heading-smudge"
           label={es ? 'Pasa el cursor para revelar otra idea' : 'Move the pointer to reveal another idea'}
-          revealed={<h2>{es ? 'Resolver problemas reales, junto a otros.' : 'Solving real problems, together.'}</h2>}
+          revealed={<h2>{es ? 'Del bug al café. Y de vuelta al bug.' : 'From bugs to coffee. Then back to bugs.'}</h2>}
         >
           <h2><ScrollLyricsText text={es
             ? 'Del dato al producto.'

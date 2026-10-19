@@ -15,7 +15,7 @@ export function EducationSection({ locale }: { locale: Locale }) {
           <SmudgeReveal
             className="about-heading-smudge education-smudge"
             label={es ? 'Pasa el cursor para revelar otra idea' : 'Move the pointer to reveal another idea'}
-            revealed={<h2>{es ? 'Aprender nunca termina.' : 'Learning never stops.'}</h2>}
+            revealed={<h2>{es ? 'Título oficial. Doctorado no oficial en Googlear.' : 'Official degree. Unofficial doctorate in Googling.'}</h2>}
           >
             <h2><ScrollLyricsText text={es ? 'Ingeniería en Ciencias de la Computación.' : 'Computer Science Engineering.'} /></h2>
           </SmudgeReveal>

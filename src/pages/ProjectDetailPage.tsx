@@ -180,6 +180,20 @@ export function ProjectDetailPage({ locale, onNavigate, projectId }: { locale: L
   }
 
   const organization = organizations[project.id]?.[locale] ?? (es ? 'Proyecto' : 'Project')
+  const projectInsights = [
+    project.outcome && {
+      label: es ? 'RESULTADO' : 'OUTCOME',
+      text: project.outcome[locale],
+    },
+    project.learning && {
+      label: es ? 'APRENDIZAJE' : 'LESSON',
+      text: project.learning[locale],
+    },
+    project.nextSteps && {
+      label: es ? 'SIGUIENTE PASO' : 'NEXT STEP',
+      text: project.nextSteps[locale],
+    },
+  ].filter((item): item is { label: string; text: string } => Boolean(item))
 
   return (
     <article className="project-detail-page">
@@ -221,6 +235,24 @@ export function ProjectDetailPage({ locale, onNavigate, projectId }: { locale: L
             <p>{project.solution[locale]}</p>
           </section>
         </div>
+
+        {projectInsights.length > 0 && (
+          <section className="project-detail-insights">
+            <header className="project-detail-insights-heading">
+              <p className="technical-label">{es ? 'IMPACTO Y APRENDIZAJES' : 'IMPACT & LESSONS'}</p>
+              <h2>{es ? 'Lo que dejó el proyecto.' : 'What the project left behind.'}</h2>
+            </header>
+            <div className="project-detail-insight-grid">
+              {projectInsights.map((item, index) => (
+                <article className="project-detail-insight" key={item.label}>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <p className="technical-label">{item.label}</p>
+                  <p>{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
       </section>
 
       {projectPreviews.length > 0 && (
