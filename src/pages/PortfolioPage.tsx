@@ -8,7 +8,6 @@ const ContactSection = lazy(() => import('../components/sections/ContactSection'
 const EducationSection = lazy(() => import('../components/sections/EducationSection').then((module) => ({ default: module.EducationSection })))
 const ExperienceSection = lazy(() => import('../components/sections/ExperienceSection').then((module) => ({ default: module.ExperienceSection })))
 const PhilosophySection = lazy(() => import('../components/sections/PhilosophySection').then((module) => ({ default: module.PhilosophySection })))
-const ProofSection = lazy(() => import('../components/sections/ProofSection').then((module) => ({ default: module.ProofSection })))
 const WorkExperienceSection = lazy(() => import('../components/sections/WorkExperienceSection').then((module) => ({ default: module.WorkExperienceSection })))
 const WorkSection = lazy(() => import('../components/sections/WorkSection').then((module) => ({ default: module.WorkSection })))
 const ProjectDetailPage = lazy(() => import('./ProjectDetailPage').then((module) => ({ default: module.ProjectDetailPage })))
@@ -38,7 +37,6 @@ export function PortfolioPage({ locale, onNavigate, projectId, route }: Portfoli
         <WorkExperienceSection locale={locale} />
         <ExperienceSection locale={locale} />
         <EducationSection locale={locale} />
-        <ProofSection locale={locale} onNavigate={onNavigate} />
         <PhilosophySection locale={locale} />
       </Suspense>
     )

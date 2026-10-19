@@ -6391,81 +6391,6 @@ canvas {
 .project-detail-insight > p:last-child { max-width: 27ch; color: var(--color-ink); font-size: 1rem; line-height: 1.65; }
 .project-detail-insight::after { position: absolute; right: 1.6rem; bottom: 1.5rem; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--color-accent); content: ""; }
 
-/* Real project evidence presented with the circular rhythm of the reference testimonials. */
-.proof-section { min-height: 0; overflow: hidden; padding-block: clamp(5rem, 9vw, 9rem); }
-.proof-heading { max-width: 58rem; margin: 0 auto clamp(3rem, 7vw, 6rem); text-align: center; }
-.proof-heading .technical-label { color: var(--color-accent); }
-.proof-heading h2 {
-  margin-top: 1rem;
-  color: var(--color-ink);
-  font-family: "Bigger Display", Impact, "Arial Narrow", sans-serif;
-  font-size: clamp(3.4rem, 7vw, 7rem);
-  letter-spacing: -0.025em;
-  line-height: 0.9;
-  text-transform: uppercase;
-}
-.proof-layout { display: grid; width: min(100%, 74rem); grid-template-columns: minmax(14rem, 0.34fr) minmax(0, 0.66fr); align-items: center; gap: clamp(2rem, 7vw, 7rem); margin-inline: auto; }
-.proof-dial { position: relative; width: 100%; height: 30rem; }
-.proof-dial-node {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  display: grid;
-  width: 7.2rem;
-  height: 7.2rem;
-  place-items: center;
-  overflow: hidden;
-  border: 1px solid rgb(245 240 233 / 0.22);
-  border-radius: 50%;
-  padding: 0;
-  color: var(--color-ink);
-  background: #17161a;
-  cursor: pointer;
-  transform: translateY(-50%);
-  transition: inset 650ms cubic-bezier(0.22, 1, 0.36, 1), opacity 450ms ease, transform 650ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms ease;
-}
-.proof-dial-node img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) brightness(0.58); transition: filter 420ms ease, transform 650ms ease; }
-.proof-dial-node > span { font-family: "Bigger Display", sans-serif; font-size: 2rem; }
-.proof-dial-node.is-active { z-index: 3; border-color: var(--color-accent); opacity: 1; transform: translateY(-50%) scale(1.05); }
-.proof-dial-node.is-active img { filter: grayscale(0.15) brightness(0.9); transform: scale(1.04); }
-.proof-dial-node.is-previous { top: 18%; right: 6.8rem; opacity: 0.38; transform: translateY(-50%) scale(0.74); }
-.proof-dial-node.is-next { top: 82%; right: 6.8rem; opacity: 0.38; transform: translateY(-50%) scale(0.74); }
-.proof-dial-node:hover,
-.proof-dial-node:focus-visible { border-color: var(--color-accent); opacity: 0.85; }
-.proof-playback {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  display: grid;
-  width: 2.85rem;
-  height: 2.85rem;
-  place-items: center;
-  border: 1px solid rgb(245 240 233 / 0.24);
-  border-radius: 50%;
-  padding: 0;
-  color: var(--color-ink);
-  background: rgb(12 11 14 / 0.72);
-  cursor: pointer;
-  transform: translateY(-50%);
-}
-.proof-playback:hover,
-.proof-playback:focus-visible { border-color: var(--color-accent); color: #17131b; background: var(--color-accent); }
-.proof-story { min-width: 0; }
-.proof-story article { min-height: 25rem; }
-.proof-story article > .technical-label { color: var(--color-accent); }
-.proof-story h3 { max-width: 13ch; margin: 1rem 0 1.4rem; color: var(--color-ink); font-family: "Bigger Display", Impact, sans-serif; font-size: clamp(3rem, 6vw, 6rem); line-height: 0.9; text-transform: uppercase; }
-.proof-outcome { max-width: 35ch; color: var(--color-ink); font-size: clamp(1.2rem, 2vw, 1.7rem); line-height: 1.45; }
-.proof-learning { display: grid; max-width: 45ch; gap: 0.4rem; margin-top: 1.5rem; color: var(--color-muted); line-height: 1.6; }
-.proof-learning span { color: var(--color-accent); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.56rem; letter-spacing: 0.16em; }
-.proof-story article > a { display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 1.7rem; border-bottom: 1px solid var(--color-accent); padding-bottom: 0.3rem; color: var(--color-ink); font-family: "Barlow Condensed", sans-serif; font-weight: 700; letter-spacing: 0.14em; text-decoration: none; }
-.proof-story article > a:hover,
-.proof-story article > a:focus-visible { color: var(--color-accent); }
-.proof-controls { display: flex; align-items: center; gap: 0.8rem; margin-top: 1.5rem; }
-.proof-controls button { display: grid; width: 2.9rem; height: 2.9rem; place-items: center; border: 1px solid rgb(245 240 233 / 0.24); border-radius: 50%; padding: 0; color: var(--color-ink); background: transparent; cursor: pointer; }
-.proof-controls button:hover,
-.proof-controls button:focus-visible { border-color: var(--color-accent); color: #17131b; background: var(--color-accent); }
-.proof-controls span { min-width: 4rem; color: var(--color-muted); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-align: center; }
-
 @media (max-width: 47.99rem) {
   .project-detail-insights { margin-top: 4rem; padding-top: 3rem; }
   .project-detail-insights-heading h2 { font-size: clamp(2.5rem, 12vw, 4.2rem); }
@@ -6474,25 +6399,6 @@ canvas {
   .project-detail-insight:last-child { border-bottom: 0; }
   .project-detail-insight > span { margin-bottom: 1.6rem; }
   .project-detail-insight > p:last-child { max-width: 32ch; font-size: 0.98rem; }
-
-  .proof-section { width: calc(100% - 2rem); padding-block: 4.5rem; }
-  .proof-heading { margin-bottom: 2.5rem; }
-  .proof-heading h2 { font-size: clamp(2.8rem, 13vw, 4.5rem); }
-  .proof-layout { grid-template-columns: 1fr; gap: 1.5rem; }
-  .proof-dial { height: 10.5rem; }
-  .proof-dial-node { top: 50%; right: auto; left: 50%; width: 6.2rem; height: 6.2rem; transform: translate(-50%, -50%); }
-  .proof-dial-node.is-active { transform: translate(-50%, -50%) scale(1); }
-  .proof-dial-node.is-previous { top: 50%; right: auto; left: 16%; opacity: 0.34; transform: translate(-50%, -50%) scale(0.68); }
-  .proof-dial-node.is-next { top: 50%; right: auto; left: 84%; opacity: 0.34; transform: translate(-50%, -50%) scale(0.68); }
-  .proof-playback { top: auto; bottom: -0.2rem; left: 0; width: 2.5rem; height: 2.5rem; transform: none; }
-  .proof-story { text-align: center; }
-  .proof-story article { min-height: 25rem; }
-  .proof-story h3,
-  .proof-outcome,
-  .proof-learning { margin-right: auto; margin-left: auto; }
-  .proof-story h3 { font-size: clamp(2.7rem, 13vw, 4.3rem); }
-  .proof-story article > a { justify-content: center; }
-  .proof-controls { justify-content: center; }
 }
 
 /* Touch-first refinements: preserve the editorial desktop layout, make each mobile section usable and responsive. */
