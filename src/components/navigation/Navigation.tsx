@@ -20,15 +20,22 @@ export function Navigation({ locale, pathname, onNavigate }: NavigationProps) {
 
   useEffect(() => {
     if (!isOpen) return
-    const previousOverflow = document.body.style.overflow
+    const previousBodyOverflow = document.body.style.overflow
+    const previousDocumentOverflow = document.documentElement.style.overflow
     document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
     const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') setIsOpen(false) }
     window.addEventListener('keydown', closeOnEscape)
     return () => {
-      document.body.style.overflow = previousOverflow
+      document.body.style.overflow = previousBodyOverflow
+      document.documentElement.style.overflow = previousDocumentOverflow
       window.removeEventListener('keydown', closeOnEscape)
     }
   }, [isOpen])
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     event.preventDefault()
@@ -62,8 +69,9 @@ export function Navigation({ locale, pathname, onNavigate }: NavigationProps) {
           <motion.div animate={{ clipPath: 'inset(0% 0% 0% 0%)' }} className="nav-mobile-panel" exit={reduceMotion ? undefined : { clipPath: 'inset(0% 0% 100% 0%)' }} id="mobile-navigation" initial={reduceMotion ? false : { clipPath: 'inset(0% 0% 100% 0%)' }} transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.76, 0, 0.24, 1] }}>
             {navigation.map((item, index) => {
               const href = `/${locale}${item.href}`
+              const active = pathname === href || (item.id === 'projects' && pathname.startsWith(`${href}/`)) || (item.id === 'home' && pathname === `/${locale}/`)
               return (
-                <motion.a animate={{ opacity: 1, x: 0 }} className="nav-mobile-link" href={href} initial={reduceMotion ? false : { opacity: 0, x: 36 }} key={item.id} onClick={(event) => handleClick(event, href)} transition={{ delay: reduceMotion ? 0 : 0.08 + index * 0.07 }}>
+                <motion.a aria-current={active ? 'page' : undefined} animate={{ opacity: 1, x: 0 }} className={`nav-mobile-link${active ? ' is-active' : ''}`} href={href} initial={reduceMotion ? false : { opacity: 0, x: 36 }} key={item.id} onClick={(event) => handleClick(event, href)} transition={{ delay: reduceMotion ? 0 : 0.08 + index * 0.07 }}>
                   <span className="nav-roll"><span>{item.label[locale]}</span><span aria-hidden="true">{item.label[locale]}</span></span>
                 </motion.a>
               )
