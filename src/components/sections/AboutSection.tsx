@@ -72,7 +72,7 @@ export function AboutSection({ locale }: { locale: Locale }) {
             <SmudgeReveal
               className="about-role-smudge"
               label={es ? 'Pasa el cursor para descubrir mi enfoque' : 'Move the pointer to discover my approach'}
-              revealed={<div className="about-role-type about-role-type-ink">{es ? <><span>ROMPO.</span><span>ARREGLO.</span><span>DIGO QUE ERA <em>REFACTOR.</em></span></> : <><span>BREAK.</span><span>FIX.</span><span>CALL IT A <em>REFACTOR.</em></span></>}</div>}
+              revealed={<div className="about-role-type about-role-type-ink">{es ? <><span>ROMPO.</span><span>ARREGLO.</span><span>ERA <em>REFACTOR.</em></span></> : <><span>BREAK.</span><span>FIX.</span><span>CALL IT <em>REFACTOR.</em></span></>}</div>}
             >
               <h1 className="about-role-type">
                 {es ? <><span>INGENIERO</span><span>EN CIENCIAS</span><span>DE LA <em>COMPUTACIÓN</em></span></> : <><span>COMPUTER</span><span>SCIENCE</span><span><em>ENGINEER</em></span></>}

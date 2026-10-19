@@ -1,5 +1,5 @@
 import { useReducedMotion } from 'framer-motion'
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import type { PointerEvent, ReactNode } from 'react'
 
 interface SmudgeRevealProps {
@@ -30,8 +30,19 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
   const active = useRef<Stamp[]>([])
   const drying = useRef<Stamp[]>([])
   const leaveTimer = useRef(0)
+  const touchHideTimer = useRef(0)
+  const touchPointer = useRef<number | null>(null)
   const animationFrame = useRef(0)
   const reduceMotion = useReducedMotion()
+  const [touchMode, setTouchMode] = useState(false)
+
+  useEffect(() => {
+    const media = window.matchMedia('(hover: none), (pointer: coarse)')
+    const update = () => setTouchMode(media.matches)
+    update()
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
 
   useEffect(() => {
     const root = rootRef.current
@@ -53,6 +64,7 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
       observer.disconnect()
       window.removeEventListener('resize', resize)
       window.clearTimeout(leaveTimer.current)
+      window.clearTimeout(touchHideTimer.current)
       window.cancelAnimationFrame(animationFrame.current)
       group.replaceChildren()
     }
@@ -88,7 +100,20 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
   }
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (reduceMotion || (event.pointerType !== 'mouse' && event.pointerType !== 'touch')) return
+    if (event.pointerType !== 'mouse' && event.pointerType !== 'touch') return
+
+    if (touchMode && event.pointerType === 'touch') {
+      if (touchPointer.current !== event.pointerId) return
+      const root = rootRef.current
+      const bounds = root?.getBoundingClientRect()
+      if (!root || !bounds) return
+      root.style.setProperty('--smudge-touch-x', `${event.clientX - bounds.left}px`)
+      root.style.setProperty('--smudge-touch-y', `${event.clientY - bounds.top}px`)
+      root.dataset.touchActive = 'true'
+      return
+    }
+
+    if (reduceMotion) return
     window.clearTimeout(leaveTimer.current)
 
     const bounds = rootRef.current?.getBoundingClientRect()
@@ -127,21 +152,52 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
     }, 300)
   }
 
+  const beginTouchReveal = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== 'touch') return
+    touchPointer.current = event.pointerId
+    window.clearTimeout(touchHideTimer.current)
+    event.currentTarget.setPointerCapture(event.pointerId)
+    handlePointerMove(event)
+  }
+
+  const finishTouchReveal = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== 'touch') return
+    if (touchPointer.current === event.pointerId) touchPointer.current = null
+
+    if (!touchMode) {
+      handlePointerLeave()
+      return
+    }
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId)
+    }
+    window.clearTimeout(touchHideTimer.current)
+    touchHideTimer.current = window.setTimeout(() => {
+      if (rootRef.current) rootRef.current.dataset.touchActive = 'false'
+    }, 700)
+  }
+
+  const desktopMask = `url(#${maskId})`
+  const touchMask = 'radial-gradient(ellipse 7.4rem 5.2rem at calc(var(--smudge-touch-x, 50%) + 0.75rem) calc(var(--smudge-touch-y, 50%) + 0.75rem), #000 0%, #000 48%, rgb(0 0 0 / 0.92) 60%, transparent 100%)'
+
   return (
     <div
       aria-label={label}
       className={`smudge-reveal ${className}`.trim()}
-      onPointerCancel={handlePointerLeave}
-      onPointerDown={(event) => { if (event.pointerType === 'touch') handlePointerMove(event) }}
+      data-touch-active="false"
+      data-touch-mode={touchMode ? 'true' : 'false'}
+      onPointerCancel={finishTouchReveal}
+      onPointerDown={beginTouchReveal}
       onPointerEnter={(event) => { if (event.pointerType === 'mouse') handlePointerMove(event) }}
-      onPointerLeave={handlePointerLeave}
+      onPointerLeave={(event) => { if (event.pointerType === 'mouse') handlePointerLeave() }}
       onPointerMove={handlePointerMove}
-      onPointerUp={(event) => { if (event.pointerType === 'touch') handlePointerLeave() }}
+      onPointerUp={finishTouchReveal}
       ref={rootRef}
       role="group"
     >
       <div className="smudge-reveal-base">{children}</div>
-      <div aria-hidden="true" className="smudge-reveal-ink" style={{ mask: `url(#${maskId})`, WebkitMask: `url(#${maskId})` }}>
+      <div aria-hidden="true" className="smudge-reveal-ink" style={{ mask: touchMode ? touchMask : desktopMask, WebkitMask: touchMode ? touchMask : desktopMask }}>
         {revealed}
       </div>
       <svg aria-hidden="true" className="smudge-reveal-svg" ref={svgRef}>

@@ -342,9 +342,18 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
       <canvas
         aria-hidden="true"
         onPointerCancel={resetTouchFallback}
-        onPointerDown={(event) => { if (event.pointerType === 'touch') activeTouchPointer.current = event.pointerId; updateTouchFallback(event) }}
+        onPointerDown={(event) => {
+          if (event.pointerType === 'touch') {
+            activeTouchPointer.current = event.pointerId
+            event.currentTarget.setPointerCapture(event.pointerId)
+          }
+          updateTouchFallback(event)
+        }}
         onPointerMove={updateTouchFallback}
-        onPointerUp={resetTouchFallback}
+        onPointerUp={(event) => {
+          if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId)
+          resetTouchFallback(event)
+        }}
         ref={canvasRef}
       />
     </div>
