@@ -273,6 +273,16 @@ export function ProjectExplorer({ locale, onNavigate, projects }: ProjectExplore
         })}
         <div aria-hidden="true" className="project-scene-shade" />
 
+        <a
+          aria-label={(es ? 'Abrir caso de estudio: ' : 'Open case study: ') + activeProject.title[locale]}
+          className="project-scene-mobile-link"
+          href={`/${locale}/projects/${activeProject.id}`}
+          onClick={openCaseStudy}
+        >
+          <span>{es ? 'TOCA PARA VER' : 'TAP TO VIEW'}</span>
+          <ArrowUpRight aria-hidden="true" size={14} />
+        </a>
+
         <motion.a
           aria-label={(es ? 'Ver caso de estudio: ' : 'View case study: ') + activeProject.title[locale]}
           animate={{ opacity: cursorVisible ? 1 : 0, scale: cursorVisible ? 1 : 0.68 }}

@@ -72,7 +72,8 @@ export function App() {
     if (window.location.pathname !== initialPathRef.current) {
       window.history.replaceState({}, '', `${initialPathRef.current}${window.location.search}${window.location.hash}`)
     }
-    const bootTimer = window.setTimeout(() => setIsBooting(false), reduceMotion ? 120 : 1450)
+    const compactExperience = window.matchMedia('(max-width: 47.99rem)').matches
+    const bootTimer = window.setTimeout(() => setIsBooting(false), reduceMotion ? 120 : compactExperience ? 720 : 1450)
     return () => window.clearTimeout(bootTimer)
   }, [reduceMotion])
 

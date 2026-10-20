@@ -180,6 +180,7 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
 
   const desktopMask = `url(#${maskId})`
   const touchMask = 'radial-gradient(ellipse 7.4rem 5.2rem at calc(var(--smudge-touch-x, 50%) + 0.75rem) calc(var(--smudge-touch-y, 50%) + 0.75rem), #000 0%, #000 48%, rgb(0 0 0 / 0.92) 60%, transparent 100%)'
+  const touchClip = 'circle(6.2rem at var(--smudge-touch-x, 50%) var(--smudge-touch-y, 50%))'
 
   return (
     <div
@@ -197,7 +198,13 @@ export function SmudgeReveal({ label, children, revealed, className = '' }: Smud
       role="group"
     >
       <div className="smudge-reveal-base">{children}</div>
-      <div aria-hidden="true" className="smudge-reveal-ink" style={{ mask: touchMode ? touchMask : desktopMask, WebkitMask: touchMode ? touchMask : desktopMask }}>
+      <div
+        aria-hidden="true"
+        className="smudge-reveal-ink"
+        style={touchMode
+          ? { clipPath: touchClip, WebkitClipPath: touchClip, mask: touchMask, WebkitMask: touchMask }
+          : { mask: desktopMask, WebkitMask: desktopMask }}
+      >
         {revealed}
       </div>
       <svg aria-hidden="true" className="smudge-reveal-svg" ref={svgRef}>
