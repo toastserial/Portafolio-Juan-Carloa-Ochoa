@@ -4058,6 +4058,22 @@ canvas {
   }
 }
 
+/* Keep the display glyphs legible at every non-mobile width. The Bigger
+   Display face is intentionally condensed, but its narrow I/N/E shapes need
+   a small positive tracking value instead of being allowed to collide. */
+.about-role-type {
+  gap: 0.12em;
+  line-height: 0.98;
+  letter-spacing: 0.012em;
+}
+@media (max-width: 47.99rem) {
+  .about-role-type {
+    gap: 0.08em;
+    line-height: 0.95;
+    letter-spacing: 0.005em;
+  }
+}
+
 /* Capabilities read as an editorial index, not a grid of cards. */
 .capability-grid { grid-template-columns: 1fr; }
 .capability-item,
@@ -7552,19 +7568,21 @@ canvas {
     padding-block: clamp(5rem, 9vw, 9rem) clamp(7rem, 11vw, 11rem);
   }
   .about-page-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.78fr);
-    gap: clamp(4rem, 8vw, 9rem);
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 0.85fr);
+    gap: clamp(4.5rem, 8vw, 9rem);
   }
   .about-role-column .technical-label { margin-bottom: clamp(2.6rem, 5vw, 4.5rem); }
   .about-role-type {
-    gap: 0.06em;
+    gap: 0.14em;
     font-size: clamp(3.2rem, 5.7vw, 6.6rem);
-    line-height: 0.94;
-    letter-spacing: -0.035em;
+    line-height: 1;
+    letter-spacing: 0.018em;
   }
   .about-page-copy {
+    width: 100%;
     min-width: 0;
     max-width: 34rem;
+    justify-self: end;
   }
   .about-page-copy h2 {
     max-width: 10ch;
@@ -7573,7 +7591,9 @@ canvas {
     line-height: 1.04;
   }
   .about-page-copy > p:not(.technical-label) {
+    width: 100%;
     max-width: 32rem;
+    overflow-wrap: anywhere;
     font-size: clamp(1rem, 1.15vw, 1.08rem);
     line-height: 1.95;
   }

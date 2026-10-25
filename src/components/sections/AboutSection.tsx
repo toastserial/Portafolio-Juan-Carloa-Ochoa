@@ -88,7 +88,7 @@ export function AboutSection({ locale }: { locale: Locale }) {
             <p>
               {es
                 ? 'Mi trabajo cruza frontend, backend y datos: conecto esas piezas para crear productos fáciles de usar y mantener.'
-                : 'My work spans frontend, backend, and data — connecting those pieces into products that are easy to use and maintain.'}
+                : 'My work spans frontend, backend, and data. I connect those pieces into products that are easy to use and maintain.'}
             </p>
           </Reveal>
         </div>
