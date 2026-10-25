@@ -1,5 +1,6 @@
 export type Locale = 'es' | 'en'
 export type WorkspaceMode = 'software' | 'data' | 'automation'
+export type ThemeMode = 'dark' | 'light'
 
 export type ProjectStatus =
   | 'professional'

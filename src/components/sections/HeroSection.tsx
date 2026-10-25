@@ -38,7 +38,8 @@ export function HeroSection({ locale }: { locale: Locale }) {
   return (
     <section className="hero-shell" id="top" onPointerMove={revealPortrait} ref={heroRef}>
       <div aria-hidden="true" className="hero-photo">
-        <img className="hero-photo-base" decoding="async" fetchPriority="high" src="/images/hero/juan-hero-editorial-v3.png" alt="" />
+        <img className="hero-photo-base hero-photo-dark" decoding="async" fetchPriority="high" src="/images/hero/juan-hero-editorial-v3.png" alt="" />
+        <img className="hero-photo-base hero-photo-light" decoding="async" src="/images/hero/juan-hero-editorial-light.png" alt="" />
         <div className="hero-photo-wash" />
       </div>
       <div className="hero-stage page-shell">

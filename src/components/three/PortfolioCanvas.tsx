@@ -2,16 +2,10 @@ import { Bounds, ContactShadows, Grid, Html } from '@react-three/drei'
 import { Canvas, useThree } from '@react-three/fiber'
 import { Suspense, useEffect } from 'react'
 import { PortfolioModel } from './PortfolioModel'
+import { getAccentColor } from '../../lib/theme'
 import type { WorkspaceMode } from '../../types/content'
 
-const modeColors: Record<WorkspaceMode, string> = {
-  data: '#4faabd',
-  automation: '#ffb000',
-  software: '#a879d8',
-}
-
 export function PortfolioCanvas({
-  mode,
   onContextLost,
   onReady,
 }: {
@@ -20,7 +14,7 @@ export function PortfolioCanvas({
   onReady: () => void
 }) {
   const isCompact = window.matchMedia('(max-width: 47.99rem)').matches
-  const modeColor = modeColors[mode]
+  const modeColor = getAccentColor()
 
   return (
     <Canvas

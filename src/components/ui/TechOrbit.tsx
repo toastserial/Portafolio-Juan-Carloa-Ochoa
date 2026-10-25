@@ -27,21 +27,21 @@ interface OrbitTechnology {
 }
 
 const dataTechnologies: OrbitTechnology[] = [
-  { icon: BarChart3, label: 'Power BI', color: '#F2C811' },
-  { icon: FaFileExcel, label: 'Excel', color: '#217346' },
-  { abbreviation: 'PQ', label: 'Power Query', color: '#2F9E44' },
-  { icon: SiPython, label: 'Python', color: '#3776AB' },
-  { icon: SiPostgresql, label: 'PostgreSQL', color: '#4169E1' },
+  { icon: BarChart3, label: 'Power BI', color: 'var(--color-accent)' },
+  { icon: FaFileExcel, label: 'Excel', color: 'var(--color-accent)' },
+  { abbreviation: 'PQ', label: 'Power Query', color: 'var(--color-accent)' },
+  { icon: SiPython, label: 'Python', color: 'var(--color-accent)' },
+  { icon: SiPostgresql, label: 'PostgreSQL', color: 'var(--color-accent)' },
 ]
 
 const softwareTechnologies: OrbitTechnology[] = [
-  { icon: SiReact, label: 'React', color: '#61DAFB' },
-  { icon: SiTypescript, label: 'TypeScript', color: '#3178C6' },
-  { icon: SiTailwindcss, label: 'Tailwind CSS', color: '#06B6D4' },
-  { icon: SiNodedotjs, label: 'Node.js', color: '#5FA04E' },
-  { icon: SiVite, label: 'Vite', color: '#A96BFF' },
-  { icon: SiGit, label: 'Git', color: '#F05032' },
-  { icon: SiFigma, label: 'Figma', color: '#F24E1E' },
+  { icon: SiReact, label: 'React', color: 'var(--color-accent)' },
+  { icon: SiTypescript, label: 'TypeScript', color: 'var(--color-accent)' },
+  { icon: SiTailwindcss, label: 'Tailwind CSS', color: 'var(--color-accent)' },
+  { icon: SiNodedotjs, label: 'Node.js', color: 'var(--color-accent)' },
+  { icon: SiVite, label: 'Vite', color: 'var(--color-accent)' },
+  { icon: SiGit, label: 'Git', color: 'var(--color-accent)' },
+  { icon: SiFigma, label: 'Figma', color: 'var(--color-accent)' },
 ]
 
 interface TechOrbitProps {

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { MainLayout } from './components/layout/MainLayout'
 import { DEFAULT_LOCALE, isLocale } from './lib/locale'
 import { PortfolioPage } from './pages/PortfolioPage'
-import type { Locale, PortfolioRoute } from './types/content'
+import type { Locale, PortfolioRoute, ThemeMode } from './types/content'
 
 interface RouteState {
   locale: Locale
@@ -43,7 +43,7 @@ function RouteWipe({ stage, locale }: { stage: WipeStage; locale: Locale }) {
       {Array.from({ length: 25 }, (_, index) => (
         <span aria-hidden="true" className="route-wipe-slice" key={index} style={{ animationDelay: `${(stage === 'cover' ? index : 24 - index) * 0.012}s` }} />
       ))}
-      <div aria-hidden="true" className="route-wipe-mark"><img alt="" src="/icons/brand-mark.png" /><span>JUAN OCHOA</span></div>
+      <div aria-hidden="true" className="route-wipe-mark"><span className="brand-mark brand-mark--wipe" /><span>JUAN OCHOA</span></div>
     </div>
   )
 }
@@ -52,7 +52,7 @@ function InitialLoader({ locale }: { locale: Locale }) {
   const es = locale === 'es'
   return (
     <motion.div animate={{ opacity: 1 }} className="initial-loader" exit={{ opacity: 0, transition: { duration: 0.45 } }} initial={{ opacity: 1 }} role="status">
-      <motion.img alt="" animate={{ opacity: [0.45, 1, 0.45], scale: [0.96, 1, 0.96] }} src="/icons/brand-mark.png" transition={{ duration: 1.2, ease: 'easeInOut', repeat: Infinity }} />
+      <motion.span aria-hidden="true" animate={{ opacity: [0.45, 1, 0.45], scale: [0.96, 1, 0.96] }} className="brand-mark brand-mark--loader" transition={{ duration: 1.2, ease: 'easeInOut', repeat: Infinity }} />
       <p>{es ? 'CARGANDO EXPERIENCIA' : 'LOADING EXPERIENCE'}</p>
       <div className="initial-loader-track"><span /></div>
     </motion.div>
@@ -63,10 +63,23 @@ export function App() {
   const [route, setRoute] = useState<RouteState>(() => resolveRoute(window.location.pathname))
   const [isBooting, setIsBooting] = useState(true)
   const [wipeStage, setWipeStage] = useState<WipeStage>('idle')
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    try {
+      return window.localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark'
+    } catch {
+      return 'dark'
+    }
+  })
   const reduceMotion = useReducedMotion()
   const timerRef = useRef<number | undefined>(undefined)
   const routeLockRef = useRef(false)
   const initialPathRef = useRef(route.pathname)
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    document.documentElement.style.colorScheme = theme
+    try { window.localStorage.setItem('portfolio-theme', theme) } catch { /* storage can be unavailable in private contexts */ }
+  }, [theme])
 
   useEffect(() => {
     if (window.location.pathname !== initialPathRef.current) {
@@ -129,7 +142,7 @@ export function App() {
   return (
     <>
       <motion.div animate={{ opacity: isBooting ? 0 : 1 }} className="app-content" initial={{ opacity: 0 }} transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}>
-        <MainLayout locale={route.locale} onNavigate={transitionTo} pathname={route.pathname}>
+        <MainLayout locale={route.locale} onNavigate={transitionTo} pathname={route.pathname} theme={theme} onToggleTheme={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')}>
           <AnimatePresence initial={false} mode="wait">
             <motion.div animate={{ opacity: 1, y: 0 }} className="route-page" initial={reduceMotion ? false : { opacity: 0, y: 18 }} key={route.pathname} transition={{ duration: reduceMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}>
           <PortfolioPage locale={route.locale} onNavigate={transitionTo} projectId={route.projectId} route={route.route} />

@@ -1,18 +1,20 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, Moon, Sun, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { MouseEvent } from 'react'
 import { navigation } from '../../data/navigation'
 import { playClick, playHover } from '../../lib/soundEffects'
-import type { Locale } from '../../types/content'
+import type { Locale, ThemeMode } from '../../types/content'
 
 interface NavigationProps {
   locale: Locale
   pathname: string
   onNavigate: (href: string) => void
+  theme: ThemeMode
+  onToggleTheme: () => void
 }
 
-export function Navigation({ locale, pathname, onNavigate }: NavigationProps) {
+export function Navigation({ locale, pathname, onNavigate, theme, onToggleTheme }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false)
   const reduceMotion = useReducedMotion()
   const alternateLocale: Locale = locale === 'es' ? 'en' : 'es'
@@ -59,6 +61,9 @@ export function Navigation({ locale, pathname, onNavigate }: NavigationProps) {
         <a aria-label={locale === 'es' ? 'Cambiar idioma' : 'Change language'} className="nav-language" href={`/${alternateLocale}${currentPage}`} onClick={(event) => handleClick(event, `/${alternateLocale}${currentPage}`)}>
           {alternateLocale.toUpperCase()}
         </a>
+        <button aria-label={locale === 'es' ? (theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro') : (theme === 'dark' ? 'Use light mode' : 'Use dark mode')} className="theme-toggle" onClick={() => { playClick(); onToggleTheme() }} onMouseEnter={playHover} type="button">
+          {theme === 'dark' ? <Sun aria-hidden="true" size={16} /> : <Moon aria-hidden="true" size={16} />}
+        </button>
       </div>
 
       <button aria-controls="mobile-navigation" aria-expanded={isOpen} aria-label={isOpen ? (locale === 'es' ? 'Cerrar menú' : 'Close menu') : (locale === 'es' ? 'Abrir menú' : 'Open menu')} className="nav-toggle" onClick={() => { playClick(); setIsOpen((open) => !open) }} onMouseEnter={playHover} type="button">
@@ -92,7 +97,12 @@ export function Navigation({ locale, pathname, onNavigate }: NavigationProps) {
                 </motion.a>
               )
             })}
-            <a className="nav-mobile-language" href={`/${alternateLocale}${currentPage}`} onClick={(event) => handleClick(event, `/${alternateLocale}${currentPage}`)}>{alternateLocale.toUpperCase()}</a>
+            <div className="nav-mobile-tools">
+              <a className="nav-mobile-language" href={`/${alternateLocale}${currentPage}`} onClick={(event) => handleClick(event, `/${alternateLocale}${currentPage}`)}>{alternateLocale.toUpperCase()}</a>
+              <button aria-label={locale === 'es' ? (theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro') : (theme === 'dark' ? 'Use light mode' : 'Use dark mode')} className="theme-toggle theme-toggle--mobile" onClick={() => { playClick(); onToggleTheme() }} onMouseEnter={playHover} type="button">
+                {theme === 'dark' ? <Sun aria-hidden="true" size={18} /> : <Moon aria-hidden="true" size={18} />}
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

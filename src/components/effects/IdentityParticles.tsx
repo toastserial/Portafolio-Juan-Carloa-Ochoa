@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
+import { getAccentColor, hexToRgb } from '../../lib/theme'
 import type { Locale } from '../../types/content'
 
 const vertexSource = `
@@ -19,12 +20,12 @@ void main() {
 const fragmentSource = `
 precision mediump float;
 varying float vTint;
+uniform vec3 uAccent;
+uniform vec3 uPaper;
 void main() {
   float distanceToCenter = length(gl_PointCoord - 0.5);
   float alpha = 1.0 - smoothstep(0.0, 0.4, distanceToCenter);
-  vec3 paper = vec3(0.99, 0.98, 0.95);
-  vec3 lilac = vec3(0.85, 0.73, 0.98);
-  gl_FragColor = vec4(mix(paper, lilac, vTint), alpha);
+  gl_FragColor = vec4(mix(uPaper, uAccent, vTint), alpha);
 }`
 
 function makeShader(gl: WebGLRenderingContext, type: number, source: string) {
@@ -125,6 +126,10 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
     const resolutionLocation = gl.getUniformLocation(program, 'uResolution')
     const pixelRatioLocation = gl.getUniformLocation(program, 'uPixelRatio')
     const pointSizeLocation = gl.getUniformLocation(program, 'uPointSize')
+    const accentLocation = gl.getUniformLocation(program, 'uAccent')
+    const paperLocation = gl.getUniformLocation(program, 'uPaper')
+    let accentCssValue = ''
+    let paperTheme = ''
     let positions = new Float32Array(0)
     let origins = new Float32Array(0)
     let velocities = new Float32Array(0)
@@ -146,6 +151,17 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
       gl.uniform2f(resolutionLocation, canvas.clientWidth, canvas.clientHeight)
       gl.uniform1f(pixelRatioLocation, canvas.width / Math.max(canvas.clientWidth, 1))
       gl.uniform1f(pointSizeLocation, pointSize)
+      const nextAccent = getAccentColor()
+      if (nextAccent !== accentCssValue) {
+        accentCssValue = nextAccent
+        const [red, green, blue] = hexToRgb(nextAccent)
+        gl.uniform3f(accentLocation, red, green, blue)
+      }
+      const nextTheme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
+      if (nextTheme !== paperTheme) {
+        paperTheme = nextTheme
+        gl.uniform3f(paperLocation, ...(nextTheme === 'light' ? [0.018, 0.014, 0.02] : [0.99, 0.98, 0.95]) as [number, number, number])
+      }
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
       gl.bufferSubData(gl.ARRAY_BUFFER, 0, positions)
       gl.enableVertexAttribArray(positionLocation)
@@ -241,7 +257,7 @@ export function IdentityParticles({ locale }: { locale: Locale }) {
       const target = width < 500 ? 8500 : 75000
       const minimumStride = width < 500 ? 2 : 1.5
       const stride = Math.max(minimumStride, Math.sqrt(width * height * 0.35 / target))
-      pointSize = 3.5
+      pointSize = width < 500 ? 4.05 : 4.7
       const points: number[] = []
       const tints: number[] = []
       for (let y = stride; y < height - stride; y += stride) {

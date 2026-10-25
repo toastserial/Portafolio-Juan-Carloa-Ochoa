@@ -3,6 +3,7 @@ import { Html, useGLTF, useProgress, useTexture } from '@react-three/drei'
 import { useEffect, useMemo, useRef, Suspense } from 'react'
 import type { RefObject } from 'react'
 import * as THREE from 'three'
+import { getAccentColor } from '../../lib/theme'
 
 const MODEL_PATH = '/models/marcus_aurelius.glb'
 const GOGGLES_PATH = '/images/about/goggles.webp'
@@ -137,12 +138,13 @@ export default function MarcusAureliusModel({
   containerRef: RefObject<HTMLElement | null>
   showGoggles?: boolean
 }) {
+  const accentColor = getAccentColor()
   return (
     <div className="philosophy-model">
       <Canvas camera={{ position: [0, 0, 3.5], fov: 45 }} dpr={[1, 1.1]} frameloop="demand" gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}>
         <ambientLight intensity={0.9} />
         <directionalLight intensity={1.6} position={[10, 10, 5]} />
-        <directionalLight color="#b28ad6" intensity={0.6} position={[-5, -2, -2]} />
+        <directionalLight color={accentColor} intensity={0.6} position={[-5, -2, -2]} />
         <Suspense fallback={<ModelLoadingIndicator />}>
           <Bust containerRef={containerRef} showGoggles={showGoggles} />
         </Suspense>
